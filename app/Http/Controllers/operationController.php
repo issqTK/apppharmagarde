@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class operationController extends Controller
 {
-    function csvToArray($filename = 'datas.csv', $delimiter = ',')
+    private static function csvToArray($filename = '', $delimiter = ',')
     {
         if (!file_exists($filename) || !is_readable($filename))
             return false;
@@ -24,15 +24,20 @@ class operationController extends Controller
             }
             fclose($handle);
         }
+        return $data;
         
+    }
+
+    function addToPharmacie() {
+        $data = $this->csvToArray('datas.csv');
+        $results = array();
         for($i = 0; $i < count($data); $i++) {
-            if(empty($data[$i]['Phone'])) {
+            if(!empty($data[$i]['Phone']) ) {
                 echo '<pre>';        
                 print_r($data[$i]);
                 echo '</pre>';
             }
         }
-        
 
     }
 }
