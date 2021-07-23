@@ -1,0 +1,45 @@
+@extends('layouts.app')
+
+@section('content')
+
+  @if(Session::has('pharmacies'))
+    <div style="max-width:422.989px" class="w-full mt-4 mx-auto">
+      <ul class="w-full grid grid-cols divide-y divide-gray-200">
+        @foreach(Session('pharmacies') AS $pharma)
+        <?php
+        $startdate = explode('-', explode(' ', $pharma->startDate)[0]);
+        $startdate = $startdate[2] . '-' . $startdate[1];
+        $endDate = explode('-', explode(' ', $pharma->endDate)[0]);
+        $endDate = $endDate[2] . '-' . $endDate[1] . '-' . $endDate[0];
+        $typeGard = explode(':', $pharma->endHoure);
+        $location = $pharma->location_url;
+        if($typeGard[0] == '24'){
+          $gard = 'Garde ' . $typeGard[0] . '/' . $typeGard[0];
+        } else {
+          $startHoure = explode(':', $pharma->startHoure);
+          $startHoure = $startHoure[0] . ':' . $startHoure[1];
+          $endHoure = $typeGard[0] . ':' . $typeGard[1];
+          $gard = 'Ouvert de ' . $startHoure . ' à ' . $endHoure;
+        }
+        ?>
+        <div style="font-family:Poppins, serif;" class="flex flex-row px-2 py-3  ">
+          <div class="w-4/6  flex flex-col flex-shrink gap-1">
+            <li style="color:#3B3B3B" class="text-base font-bold">Pharmacie <span style="font-size:0.9em; letter-spacing:1px;">{{ $pharma->name }}</span></li>
+            <li style="color:rgb(53, 204, 128);" class="text-sm font-semibold">{{ $gard }}</li>
+            <li  style="color:#3B3B3B" class="text-xs">{{ $pharma->address }}</li>
+          </div>
+
+          <div class="flex flex-col flex-grow gap-2 align-top w-2/6  ">
+
+            <li><a href="tel:{{ $pharma->phone }}" target="_blank" style="background: rgba(3, 180, 198, 0.8);" class="colors block py-2 text-center font-bold capitalize tracking-wider text-xs sm:text-sm rounded ">📞&nbsp; Appeler</a></li>
+
+            <li><a href="{{ $location }}" target="_blank" style="background: rgb(68, 216, 158);" class="colors block py-2 text-center font-bold capitalize tracking-wider text-xs sm:text-sm rounded ">📌&nbsp;Itinéraire</a></li>
+
+          </div>
+        </div>
+        @endforeach
+      </ul>
+    </div>
+  @endif
+
+@endsection
