@@ -34,42 +34,63 @@ class operationController extends Controller
         $results = array();
         
         $j = 0;
+        $old_phone = '';
         for($i = 0; $i < count($data); $i++) {
-            if(!empty($data[$i]['Phone']) && preg_match("/{$city}/i", $data[$i]['City']) ) {
-               $results[$j]['phone'] = '0'.trim(str_replace(' ', '', str_replace('-', '', str_replace('+212', '', $data[$i]['Phone']))));
-               $results[$j]['gmaps_url'] = $data[$i]['Gmaps_URL'];
-               $results[$j]['lat'] = str_replace(',', '.', $data[$i]['Lat']);
-               $results[$j]['long'] = str_replace(',', '.', $data[$i]['Lng']);
-               $results[$j]['city_id'] = $city_id;
-               $j++;
+            if(!empty($data[$i]['Phone']) && preg_match("/[a-z1-9 ]*{$city}[a-z1-9 ]*/i", $data[$i]['City']) ) {
+                $phone = '0'.trim(str_replace(' ', '', str_replace('-', '', str_replace('+212', '', $data[$i]['Phone']))));
+                $gmaps = $data[$i]['Gmaps_URL'];
+                $lat = str_replace(',', '.', $data[$i]['Lat']);
+                $long =  str_replace(',', '.', $data[$i]['Lng']);
+                
+                if($old_phone !== $phone){
+                        $results[$j]['phone'] = $phone;
+                        $results[$j]['gmaps_url'] = $gmaps;
+                        $results[$j]['lat'] = $lat;
+                        $results[$j]['long'] = $long;
+                        $results[$j]['city_id'] = $city_id;
+
+                        $old_phone = $phone;
+
+                        $j++;
+                }
+               
             }
         }
-
         return $results;
+        /* echo '<pre>';
+        print_r($results);
+        echo '</pre>';
+        dd(); */
     }
 
-    function addToPharmacie() {
-        $casablanca = $this->filterCity('rabat', 2);
+    function addToPharmacie($city, $city_id) {
+        $results = $this->filterCity($city, $city_id);
+       
         $count = 0; 
         $fails = 0;
 
-        for($i = 0; $i<count($casablanca); $i++) {
-            $phone = pharmaciesItineraire::where('phone', '=', $casablanca[$i]['phone'])->first();
+        for($i = 0; $i<count($results); $i++) {
+            $phone = pharmaciesItineraire::where('phone', '=', $results[$i]['phone'])->first();
             if(!$phone){
-                 $data = pharmaciesItineraire::create([
-                    'phone' => $casablanca[$i]['phone'],
-                    'gmaps_url' => $casablanca[$i]['gmaps_url'],
-                    'lat' => $casablanca[$i]['lat'],
-                    'long' => $casablanca[$i]['long'],
-                    'city_id' => $casablanca[$i]['city_id'],
-                ]); 
+                $data = pharmaciesItineraire::create([
+                    'phone' => $results[$i]['phone'],
+                    'gmaps_url' => $results[$i]['gmaps_url'],
+                    'lat' => $results[$i]['lat'],
+                    'long' => $results[$i]['long'],
+                    'city_id' => $results[$i]['city_id'],
+                ]);
 
                 $count++;
                 
-            } else {$fails++;}
-           
+            } else { $fails++;   }
+
         }
-        echo 'add '. $count;
-        echo 'fails '. $fails;
+        return 'Adding succesfuly : '. $count . '<br>Fails  : ' . $fails;
+
+    }
+
+    function exeCities(){
+        //return $this->addToPharmacie('casablanca', 1);
+        return $this->addToPharmacie('temara', 14);
     }
 }

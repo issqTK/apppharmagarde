@@ -38,7 +38,7 @@ Route::get('/schedule/run', [schedule::class, 'exec'])->name('scrapeALL')->middl
 Route::get('/schedule/run/cron', [schedule::class, 'cron']);
 
 // Operation test
-Route::get('/operation', [operationController::class, 'addToPharmacie']);
+Route::get('/operation', [operationController::class, 'exeCities']);
 
 ////////////
 Route::get('/admin/scrapesafi', [scraperController::class, 'scrapeSafi'])->name('scrapesafi')->middleware('isLogged');
