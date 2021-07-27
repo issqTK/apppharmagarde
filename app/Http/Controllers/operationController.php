@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\pharmaciesItineraire;
+use App\Models\Pharmacy;
 
 class operationController extends Controller
 {
-    private static function csvToArray($filename = '', $delimiter = ',')
-    {
+    //Upload Csv to mySql
+    private static function csvToArray($filename = '', $delimiter = ',') {
         if (!file_exists($filename) || !is_readable($filename))
             return false;
 
@@ -57,10 +58,7 @@ class operationController extends Controller
             }
         }
         return $results;
-        /* echo '<pre>';
-        print_r($results);
-        echo '</pre>';
-        dd(); */
+       
     }
 
     function addToPharmacie($city, $city_id) {
@@ -70,9 +68,9 @@ class operationController extends Controller
         $fails = 0;
 
         for($i = 0; $i<count($results); $i++) {
-            $phone = pharmaciesItineraire::where('phone', '=', $results[$i]['phone'])->first();
+            $phone = Pharmacy::where('phone', '=', $results[$i]['phone'])->first();
             if(!$phone){
-                $data = pharmaciesItineraire::create([
+                $data = Pharmacy::create([
                     'phone' => $results[$i]['phone'],
                     'gmaps_url' => $results[$i]['gmaps_url'],
                     'lat' => $results[$i]['lat'],
@@ -91,6 +89,8 @@ class operationController extends Controller
 
     function exeCities(){
         //return $this->addToPharmacie('casablanca', 1);
-        return $this->addToPharmacie('temara', 14);
+        return $this->addToPharmacie('Témara', 14);
     }
+
+
 }

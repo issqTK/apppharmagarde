@@ -15,8 +15,8 @@ class CreatePharmaciesTable extends Migration
     {
         Schema::create('pharmacies', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 255);
-            $table->string('address', 255);
+            $table->string('name', 255)->nullable();
+            $table->string('address', 255)->nullable();
             $table->string('phone', 20)->unique();
             $table->text('location_url')->nullable();
             $table->text('gmaps_url')->nullable();

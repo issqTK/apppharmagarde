@@ -40,6 +40,7 @@ Route::get('/schedule/run/cron', [schedule::class, 'cron']);
 // Operation test
 Route::get('/operation', [operationController::class, 'exeCities']);
 
+
 ////////////
 Route::get('/admin/scrapesafi', [scraperController::class, 'scrapeSafi'])->name('scrapesafi')->middleware('isLogged');
 Route::get('/admin/scrapesale', [scraperController::class, 'scrapeSale'])->name('scrapesale')->middleware('isLogged');
