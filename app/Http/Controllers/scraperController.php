@@ -89,11 +89,12 @@ class scraperController extends Controller
 
       //INSERT To MySql
       $pharmacyCount = 0;
+      $pharmacyUpdated = 0;
       $gardCount = 0;
 
       for($i = 0; $i < count($datas); $i++) {
 
-        $pharmacy = Pharmacy::query()->where('phone', '=', $datas[$i]['phone'])->first();
+        $pharmacy = Pharmacy::query()->where("phone", "=", $datas[$i]['phone'])->first();
         
         if (!$pharmacy) {
             $resultpharma = Pharmacy::create([ 'name' =>  $datas[$i]['name'], 'address' =>  $datas[$i]['address'],
@@ -108,18 +109,42 @@ class scraperController extends Controller
 
             $gardCount ++;
 
-        } else {
+        } 
+        elseif( $pharmacy->name == null ) {
+            Pharmacy::where('id', '=', $pharmacy->id)
+            ->update([
+              'name' => $datas[$i]['name'],
+              'address' => $datas[$i]['address'],
+            ]);
+
+            $pharmacyUpdated ++;
+
+            Gard::create([
+              'startDate' =>  $datas[$i]['startDate'], 
+              'endDate' =>  $datas[$i]['endDate'], 
+              'guard_type' =>  $datas[$i]['guard-type'],
+              'pharmacy_id' => $pharmacy->id 
+            ]);
+
+             $gardCount ++;
+
+        } 
+        else { 
             $gard = Gard::query()
-              ->where("startDate", "=", $datas[$i]['startDate'])->where("endDate", "=", $datas[$i]['endDate'])->where('pharmacy_id', '=', $pharmacy->id)
-              ->count();
+            ->where("startDate", "=", $datas[$i]['startDate'])
+            ->where("endDate", "=", $datas[$i]['endDate'])
+            ->where('pharmacy_id', '=', $pharmacy->id)
+            ->count();
 
             if(!$gard) {
-              Gard::create([ 'startDate' =>  $datas[$i]['startDate'], 'endDate' =>  $datas[$i]['endDate'], 'guard_type' =>  $datas[$i]['guard-type'],
-                'pharmacy_id' => $pharmacy->id ]);
+                Gard::create([ 
+                  'startDate' =>  $datas[$i]['startDate'], 
+                  'endDate' =>  $datas[$i]['endDate'], 
+                  'guard_type' =>  $datas[$i]['guard-type'],
+                  'pharmacy_id' => $pharmacy->id ]);
 
-              $gardCount ++;
-
-            } else { continue;   }
+                $gardCount ++;
+            }
         }
 
       }//end For Loop
@@ -138,6 +163,11 @@ class scraperController extends Controller
         Session()->pull('gardCount');
       }
       Session()->put(['pharmacyCount' => $pharmacyCount, 'gardCount' => $gardCount]);
+      if(Session()->has('pharmacyUpdated')) {
+        Session()->pull('pharmacyUpdated');
+      }
+      
+      Session()->put(['pharmacyUpdated' => $pharmacyUpdated]);
       return redirect()->route('dashboard');
     }
 
