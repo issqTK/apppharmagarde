@@ -8,10 +8,19 @@ use App\Models\Pharmacy;
 use App\Models\Gard;
 use Carbon\Carbon;
 
+use App\Http\Controllers\scraperController;
+
+
 class scrapeClass extends Controller
 {
+    public function __construct(scraperController $scrapeCasa)
+    {
+        $this->scrapeCasa = $scrapeCasa;
+    }
+
     public $pharmacyFails = 0;
     public $pharmacyCount = 0;
+    public $pharmacyUpdated = 0;
     public $gardCount = 0;
     public function scrape($url, $cityName, $cityID) {
         $client = new Client(); $mainPage = $client->request('GET', $url);
@@ -93,47 +102,61 @@ class scrapeClass extends Controller
             $pharmacy = Pharmacy::query()
                         ->where('phone', '=', $datas[$i]['phone'])
                         ->first();
-            if (!$pharmacy) {
-    
-                $resultpharma = Pharmacy::create([
-                    'name' =>  $datas[$i]['name'],
-                    'address' =>  $datas[$i]['address'],
-                    'phone' =>  $datas[$i]['phone'],
-                    'location_url' =>  $datas[$i]['location'],
-                    'lat' =>  $datas[$i]['lat'],
-                    'long' =>  $datas[$i]['long'],
-                    'city_id' => $cityID
-                ]);
-                $this->pharmacyCount++;
 
-                //create gard
-                Gard::create([
-                    'startDate' =>  $datas[$i]['startDate'],
-                    'endDate' =>  $datas[$i]['endDate'],
-                    'guard_type' =>  $datas[$i]['guard-type'],
-                    'pharmacy_id' => $resultpharma->id
+            if (!$pharmacy) {
+                $resultpharma = Pharmacy::create([ 
+                    'name' =>  $datas[$i]['name'], 
+                    'address' =>  $datas[$i]['address'],
+                    'phone' =>  $datas[$i]['phone'], 
+                    'location_url' =>  $datas[$i]['location'],
+                    'lat' =>  $datas[$i]['lat'], 
+                    'long' =>  $datas[$i]['long'],
+                    'city_id' => $cityID ]);
+
+                $this->pharmacyCount ++;
+
+                Gard::create([ 'startDate' =>  $datas[$i]['startDate'], 'endDate' =>  $datas[$i]['endDate'],
+                    'guard_type' =>  $datas[$i]['guard-type'], 'pharmacy_id' => $resultpharma->id ]);
+
+                $this->gardCount ++;
+
+            } 
+            elseif( $pharmacy->name == null ) {
+                Pharmacy::where('id', '=', $pharmacy->id)
+                ->update([
+                    'name' => $datas[$i]['name'],
+                    'address' => $datas[$i]['address'],
                 ]);
-                $this->gardCount++;
-    
-            } else {
-                //create gard if it doesn't exist
+
+                $this->pharmacyUpdated ++;
+
+                Gard::create([
+                    'startDate' =>  $datas[$i]['startDate'], 
+                    'endDate' =>  $datas[$i]['endDate'], 
+                    'guard_type' =>  $datas[$i]['guard-type'],
+                    'pharmacy_id' => $pharmacy->id 
+                ]);
+
+                $this->gardCount ++;
+
+            } 
+            else { 
                 $gard = Gard::query()
                 ->where("startDate", "=", $datas[$i]['startDate'])
                 ->where("endDate", "=", $datas[$i]['endDate'])
                 ->where('pharmacy_id', '=', $pharmacy->id)
                 ->count();
-    
-                if(!$gard) {
-                    Gard::create([
-                        'startDate' =>  $datas[$i]['startDate'],
-                        'endDate' =>  $datas[$i]['endDate'],
-                        'guard_type' =>  $datas[$i]['guard-type'],
-                        'pharmacy_id' => $pharmacy->id
-                    ]);
-                    $this->gardCount++;
-                } else { continue;  }
 
-            }//end else
+                if(!$gard) {
+                    Gard::create([ 
+                        'startDate' =>  $datas[$i]['startDate'], 
+                        'endDate' =>  $datas[$i]['endDate'], 
+                        'guard_type' =>  $datas[$i]['guard-type'],
+                        'pharmacy_id' => $pharmacy->id ]);
+
+                    $this->gardCount ++;
+                }
+            }
     
         }//end For Loop
         
@@ -141,7 +164,7 @@ class scrapeClass extends Controller
     }
 
     public function scrapeAll(){
-        $this->scrape('https://www.annuaire-gratuit.ma/pharmacie-garde-casablanca.html', 'Casablanca', 1);
+        $this->scrapeCasa->scrapeCasa();
         $this->scrape('https://www.annuaire-gratuit.ma/pharmacie-garde-rabat.html', 'Rabat', 2);
         $this->scrape("https://www.annuaire-gratuit.ma/pharmacie-garde-marrakech.html", 'Marrakech', 3);
         $this->scrape('https://www.annuaire-gratuit.ma/pharmacie-garde-el-jadida.html', 'El Jadida', 4);
@@ -156,12 +179,19 @@ class scrapeClass extends Controller
         $this->scrape('https://www.annuaire-gratuit.ma/pharmacie-garde-tanger.html', 'Tanger', 13);
         $this->scrape('https://www.annuaire-gratuit.ma/pharmacie-garde-temara.html', 'Temara', 14);
         
-        if(Session()->has('pharmacyCount') && Session()->has('gardCount')) {
-            Session()->pull('pharmacyCount'); Session()->pull('gardCount'); }
+        if(Session()->has('pharmacyCount') ) { Session()->pull('pharmacyCount'); }
+
+        if(Session()->has('pharmacyUpdated')){ session()->pull('pharmacyUpdated'); }
+
+        if(Session()->has('gardCount')){ Session()->pull('gardCount'); }
 
         if(Session()->has('pharmaFails')){ session()->pull('pharmaFails'); }
+
         
-        session()->put(['pharmacyCount' => $this->pharmacyCount, 'gardCount' => $this->gardCount]);
+        
+        session()->put(['pharmacyCount' => $this->pharmacyCount]);
+        session()->put(['pharmacyUpdated' => $this->pharmacyUpdated]);
+        session()->put(['gardCount' => $this->gardCount]);
         session()->put(['pharmaFails' => $this->pharmacyFails]);
     }
 }

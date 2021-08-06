@@ -13,7 +13,6 @@ use Carbon\Carbon;
 
 class scraperController extends Controller
 {
-   //Static method
     public static function scraper($url, $cityName, $cityID) {
       $client = new Client(); $mainPage = $client->request('GET', $url);
 
@@ -97,10 +96,15 @@ class scraperController extends Controller
         $pharmacy = Pharmacy::query()->where("phone", "=", $datas[$i]['phone'])->first();
         
         if (!$pharmacy) {
-            $resultpharma = Pharmacy::create([ 'name' =>  $datas[$i]['name'], 'address' =>  $datas[$i]['address'],
-                'phone' =>  $datas[$i]['phone'], 'location_url' =>  $datas[$i]['location'],
-                'lat' =>  $datas[$i]['lat'], 'long' =>  $datas[$i]['long'],
-                'city_id' => $cityID ]);
+            $resultpharma = Pharmacy::create([ 
+              'name' =>  $datas[$i]['name'], 
+              'address' =>  $datas[$i]['address'],
+              'phone' =>  $datas[$i]['phone'], 
+              'location_url' =>  $datas[$i]['location'],
+              'lat' =>  $datas[$i]['lat'], 
+              'long' =>  $datas[$i]['long'],
+              'city_id' => $cityID 
+            ]);
 
             $pharmacyCount ++;
 
@@ -154,6 +158,7 @@ class scraperController extends Controller
           'city' =>  $cityName,
           'guards_added' => $gardCount,
           'pharmacies_added' => $pharmacyCount,
+          'pharmacies_Updated' => $pharmacyUpdated,
           'pharmacies_fails_count' =>  $pharmaFails,
           'updated_at' => Carbon::now()
       ]);
@@ -172,7 +177,136 @@ class scraperController extends Controller
     }
 
     public function scrapeCasa() {
-      return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-casablanca.html', 'Casablanca', 1);
+      $client = new Client(); 
+      $mainPage = $client->request('GET', 'https://lematin.ma/pharmacie-garde-casablanca.html');
+
+      $urls = $mainPage->filter('.lespharmaciengarde')->each(function($item) {
+        return 'https://lematin.ma' . $item->filter('a')->attr('href');
+      });
+
+      for($i = 0; $i < count($urls); $i++) {
+        $page = $client->request('GET', $urls[$i]);
+      
+        $sub_urls[$i] = $page->filter('.lespharmaciengarde .pharmacie')->each(function($item) {
+          return 'https://lematin.ma' . $item->filter('h5 a')->attr('href');
+        });
+        
+      }
+
+      $main_urls = array();
+      foreach ($sub_urls as $url) {
+          $main_urls = array_merge($main_urls, $url);
+      }
+
+      $datas = array();
+      for($i = 0; $i < count($main_urls); $i++) {
+        $page = $client->request('GET', $main_urls[$i]);
+      
+        $datas[$i]['name'] = trim( str_replace('Pharmacie', '', $page->filter('.lespharmaciengarde h4 a')->first()->text()) );
+        $datas[$i]['address'] = trim( str_replace( 'Adresse :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(1)->text()) );
+        $datas[$i]['phone'] = trim( str_replace('.', '', str_replace('Tél :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(0)->text())) );
+        $datas[$i]['startDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(3)->text();
+        $datas[$i]['endDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(4)->text();
+        
+        if( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(2)->children()->count() === 1 ) {
+          $datas[$i]['guard-type'] = '24h';
+        } elseif ( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(0)->children()->count() === 1 ) {
+          $datas[$i]['guard-type'] = 'jour';
+        } elseif( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(1)->children()->count() === 1 ) {
+          $datas[$i]['guard-type'] = 'nuit';
+        }
+      }
+
+      //INSERT To MySql
+      $pharmacyCount = 0;
+      $pharmacyUpdated = 0;
+      $gardCount = 0;
+
+      for($i = 0; $i < count($datas); $i++) {
+
+        $pharmacy = Pharmacy::query()->where("phone", "=", $datas[$i]['phone'])->first();
+        
+        if (!$pharmacy) {
+            $resultpharma = Pharmacy::create([ 
+              'name' =>  $datas[$i]['name'], 
+              'address' =>  $datas[$i]['address'],
+              'phone' =>  $datas[$i]['phone'], 
+              'city_id' => 1 
+            ]);
+
+            $pharmacyCount ++;
+
+            Gard::create([ 
+              'startDate' =>  $datas[$i]['startDate'], 
+              'endDate' =>  $datas[$i]['endDate'],
+              'guard_type' =>  $datas[$i]['guard-type'], 
+              'pharmacy_id' => $resultpharma->id 
+            ]);
+
+            $gardCount ++;
+
+        } 
+        elseif( $pharmacy->name == null ) {
+            Pharmacy::where('id', '=', $pharmacy->id)
+            ->update([
+              'name' => $datas[$i]['name'],
+              'address' => $datas[$i]['address'],
+            ]);
+
+            $pharmacyUpdated ++;
+
+            Gard::create([
+              'startDate' =>  $datas[$i]['startDate'], 
+              'endDate' =>  $datas[$i]['endDate'], 
+              'guard_type' =>  $datas[$i]['guard-type'],
+              'pharmacy_id' => $pharmacy->id 
+            ]);
+
+             $gardCount ++;
+
+        } 
+        else { 
+            $gard = Gard::query()
+            ->where("startDate", "=", $datas[$i]['startDate'])
+            ->where("endDate", "=", $datas[$i]['endDate'])
+            ->where('pharmacy_id', '=', $pharmacy->id)
+            ->count();
+
+            if(!$gard) {
+                Gard::create([ 
+                  'startDate' =>  $datas[$i]['startDate'], 
+                  'endDate' =>  $datas[$i]['endDate'], 
+                  'guard_type' =>  $datas[$i]['guard-type'],
+                  'pharmacy_id' => $pharmacy->id ]);
+
+                $gardCount ++;
+            }
+        }
+
+      }//end For Loop
+
+      $result = last_scrape_info::create([
+          'executedBy' =>  'App_single',
+          'city' =>  'Casablanca',
+          'guards_added' => $gardCount,
+          'pharmacies_added' => $pharmacyCount,
+          'pharmacies_Updated' => $pharmacyUpdated,
+          'pharmacies_fails_count' =>  0,
+          'updated_at' => Carbon::now()
+      ]);
+
+      if(Session()->has('pharmacyCount') && Session()->has('gardCount')) {
+        Session()->pull('pharmacyCount');
+        Session()->pull('gardCount');
+      }
+      Session()->put(['pharmacyCount' => $pharmacyCount, 'gardCount' => $gardCount]);
+      if(Session()->has('pharmacyUpdated')) {
+        Session()->pull('pharmacyUpdated');
+      }
+      
+      Session()->put(['pharmacyUpdated' => $pharmacyUpdated]);
+      return redirect()->route('dashboard');
+      
     }
 
     public function scrapeRabat() {
