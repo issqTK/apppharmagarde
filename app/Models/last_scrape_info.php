@@ -16,6 +16,7 @@ class last_scrape_info extends Model
         'city',
         'guards_added',
         'pharmacies_added',
+        'pharmacies_Updated',
         'pharmacies_fails_count',
         'updated_at'
     ];
