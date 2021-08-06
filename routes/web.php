@@ -8,6 +8,7 @@ use App\Http\Controllers\dashboard;
 use App\Http\Controllers\schedule;
 use App\Models\City;
 use App\Http\Controllers\operationController;
+use App\Http\Controllers\gespharmaController;
 
 
 //Public
@@ -40,6 +41,12 @@ Route::get('/schedule/run/cron', [schedule::class, 'cron']);
 // Operation test
 Route::get('/operation', [operationController::class, 'exeCities']);
 
+//Getion pharmacies
+Route::get('/admin/gestion-pharmacies', [gespharmaController::class, 'index'])->name('getGesPharma')->middleware('isLogged');
+Route::post('/admin/gestion-pharmacies', [gespharmaController::class, 'filter'])->name('filter')->middleware('isLogged');
+Route::get('/admin/edit-pharmacy/{id}', [gespharmaController::class, 'getPharmacy'])->name('getPharmacy')->middleware('isLogged');
+Route::post('/admin/edit-pharmacy/{id}', [gespharmaController::class, 'updatePharmacy'])->name('updatePharmacy')->middleware('isLogged');
+ 
 
 ////////////
 Route::get('/admin/scrapesafi', [scraperController::class, 'scrapeSafi'])->name('scrapesafi')->middleware('isLogged');
