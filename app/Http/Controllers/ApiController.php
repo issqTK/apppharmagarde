@@ -9,7 +9,6 @@ use App\Models\config;
 use App\Models\City;
 use Illuminate\Support\Facades\DB;
 
-
 class ApiController extends Controller
 {
     public function guardsByCity($city) {
@@ -41,16 +40,13 @@ class ApiController extends Controller
             $results[$i]['city_id'] = $datas[$i]['city_id'];
         }
 
-        //$results = json_encode($results);
-        echo '<pre>';
-        print_r($results);
-        echo '</pre>';
-        //return response()->json($results, 200);
+        $results = json_encode($results);
+        return response()->json($results, 200);
     }
 
-    public function showcloser(){
-        $lat = 33.261183961616446;
-        $long = -8.512451958175692;
+    public function showcloser($lat, $long){
+        /* $lat = 33.261183961616446;
+        $long = -8.512451958175692; */
 
         $datas = Pharmacy::join('gards', 'gards.pharmacy_id', '=', 'pharmacies.id')
         ->join('configs', 'configs.city_id', 'pharmacies.city_id')
@@ -69,6 +65,7 @@ class ApiController extends Controller
         ->get();
 
         $results = array();
+
         for($i = 0; $i < count($datas); $i++){
             $results[$i]['name'] =  $datas[$i]->name;
             $results[$i]['address'] =  $datas[$i]->address;
@@ -78,9 +75,7 @@ class ApiController extends Controller
             $results[$i]['long'] =  $datas[$i]->long;
             $results[$i]['dis'] = $datas[$i]->distance;
         }
-        echo '<pre>';
-        print_r($results);
-        echo '</pre>';
-        // to be continues..
+        $results = json_encode($results);
+        return response()->json($results, 200);
     }
 }
