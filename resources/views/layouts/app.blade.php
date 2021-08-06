@@ -25,12 +25,35 @@
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
   <style>
-    .active{
-      background-color: #60A5FA;
-      color: white;
-    }
+    .active{ background-color: #60A5FA; color: white;  }
     .colors{ color:white; }
     .colors:hover{background:rgb(20 142 155 / 80%)!important;}
+    
+    table{ width: 100%; border-collapse: collapse; }
+    table tr:nth-child(even){background-color: #f2f2f2;}
+    table tr:hover {background-color: #ddd;}
+    table td, table th{  
+      max-width: 150px!important;
+      text-align:center;
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      color: white;
+    }
+    table td p{
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden:
+    }
+
+    .contains{
+      margin-bottom: 15px;
+    }
+    .contains li:nth-child(2) input{width:100%; padding:3px 8px; border-radius:5px; border:0.5px solid lightgray}
   </style>
 </head>
 <body>
@@ -112,12 +135,20 @@
               </a>
               
               <div class="hidden z-10 absolute right-0 text-sm top-8 bg-white" id="admin-popup">
-                <ul class="border-1 border-blue-100">
-                  <li class="border-b-1 border-blue-100"><a href="{{ route('updateInfos') }}" style="width:150px"  class="block p-2 hover:bg-blue-400 hover:text-white">Last Updates Infos</a></li>
-                  <li class=""><form action="{{ route('logout') }}" method="post" class="w-full">
+                <ul class="bg-blue-400 text-white py-2">
+                  <li class="border-b-1 border-blue-100"><a href="{{ route('updateInfos') }}" style="width:150px"  
+                  class="block p-2 hover:bg-white hover:text-blue-400">
+                  Last Updates Infos</a></li>
+
+                  <li class="border-b-1 border-blue-100"><a href="{{ route('getGesPharma') }}" style="width:150px"  
+                  class="block p-2 hover:bg-white hover:text-blue-400">
+                  Gestion Pharmacies</a></li>
+    <hr>
+                  <li class="">
+                    <form action="{{ route('logout') }}" method="post" class="w-full">
                       @csrf 
-                      <button type="submit" class="w-full p-2 text-left hover:bg-blue-400 hover:text-white">Logout</button> 
-                      </form>
+                      <button type="submit" class="w-full p-2 text-left hover:bg-white hover:text-blue-400">Logout</button> 
+                    </form>
                   </li>
                 </ul>
               </div>
