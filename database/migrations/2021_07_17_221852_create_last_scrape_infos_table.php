@@ -19,6 +19,7 @@ class CreateLastScrapeInfosTable extends Migration
             $table->string('city');
             $table->integer('guards_added');
             $table->integer('pharmacies_added');
+            $table->integer('pharmacies_Updated');
             $table->integer('pharmacies_fails_count');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
