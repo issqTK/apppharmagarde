@@ -11,7 +11,48 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    public function guardsByCity($city) {
+    /**
+     * @OA\Get(
+     *      path="/gards/position/{lat}/{long}",
+     *      operationId="getGuardsCloser",
+     *      tags={"guardscloser"},
+     *      summary="Get json Guards Closer by Lat and Long",
+     *      description="Get json Guards Closer by Lat and Long",
+     *      @OA\Parameter(
+     *          name="lat",
+     *          description="Latitude",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number",
+     *              format="double"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="long",
+     *          description="longitude",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number",
+     *              format="double"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found"),
+     *      security={
+     *         {
+     *             "oauth2_security_example": {"write:projects", "read:projects"}
+     *         }
+     *     },
+     * )
+     */
+
+    /* public function guardsByCity($city) {
         $datas = Pharmacy::join('gards', 'gards.pharmacy_id', '=', 'pharmacies.id')
         ->join('configs', 'configs.city_id', 'pharmacies.city_id')
         ->select('pharmacies.*', 'gards.*', 'configs.*')
@@ -42,7 +83,7 @@ class ApiController extends Controller
 
         $results = json_encode($results);
         return response()->json($results, 200);
-    }
+    } */
 
     public function showcloser($lat, $long){
         /* $lat = 33.261183961616446;
@@ -77,5 +118,7 @@ class ApiController extends Controller
         }
         $results = json_encode($results);
         return response()->json($results, 200);
+    
+
     }
 }
