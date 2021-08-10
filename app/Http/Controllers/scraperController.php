@@ -176,7 +176,7 @@ class scraperController extends Controller
       return redirect()->route('dashboard');
     }
 
-    public function scrapeCasa() {
+    public function scrapeLEMATIN() {
       $client = new Client(); 
       $mainPage = $client->request('GET', 'https://lematin.ma/pharmacie-garde-casablanca.html');
 
@@ -284,7 +284,19 @@ class scraperController extends Controller
         }
 
       }//end For Loop
-
+      $infos = array();
+      $infos['pharmacyCount'] = $pharmacyCount;
+      $infos['pharmacyUpdated'] = $pharmacyUpdated;
+      $infos['gardCount'] = $gardCount;
+      return $infos;
+    }
+    public function scrapeCasa() {
+      $infos = $this->scrapeLEMATIN(); 
+      
+      $pharmacyCount = $infos['pharmacyCount']; 
+      $pharmacyUpdated = $infos['pharmacyUpdated'];
+      $gardCount = $infos['gardCount'];
+      
       $result = last_scrape_info::create([
           'executedBy' =>  'App_single',
           'city' =>  'Casablanca',

@@ -164,7 +164,7 @@ class scrapeClass extends Controller
     }
 
     public function scrapeAll(){
-        $this->scrapeCasa->scrapeCasa();
+        $casa = $this->scrapeCasa->scrapeLEMATIN();
         $this->scrape('https://www.annuaire-gratuit.ma/pharmacie-garde-rabat.html', 'Rabat', 2);
         $this->scrape("https://www.annuaire-gratuit.ma/pharmacie-garde-marrakech.html", 'Marrakech', 3);
         $this->scrape('https://www.annuaire-gratuit.ma/pharmacie-garde-el-jadida.html', 'El Jadida', 4);
@@ -187,11 +187,13 @@ class scrapeClass extends Controller
 
         if(Session()->has('pharmaFails')){ session()->pull('pharmaFails'); }
 
+        $pharmacyCount = $this->pharmacyCount + $casa['pharmacyCount'];
+        $pharmacyUpdated = $this->pharmacyUpdated + $casa['pharmacyUpdated'];
+        $gardCount = $this->gardCount + $casa['gardCount'];
         
-        
-        session()->put(['pharmacyCount' => $this->pharmacyCount]);
-        session()->put(['pharmacyUpdated' => $this->pharmacyUpdated]);
-        session()->put(['gardCount' => $this->gardCount]);
+        session()->put(['pharmacyCount' => $pharmacyCount]);
+        session()->put(['pharmacyUpdated' => $pharmacyUpdated]);
+        session()->put(['gardCount' => $gardCount]);
         session()->put(['pharmaFails' => $this->pharmacyFails]);
     }
 }
