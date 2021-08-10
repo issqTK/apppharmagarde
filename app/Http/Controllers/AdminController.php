@@ -20,6 +20,7 @@ class AdminController extends Controller
               ->orderBy('updated_at', 'DESC')
               ->limit(10)
               ->get();
+              dd($datas);
     return view('admin/updateinfos')->with(['datas'=> $datas]);
   }
 
