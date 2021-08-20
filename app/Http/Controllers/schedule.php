@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\scrapeClass;
 use App\Models\last_scrape_info;
 use Carbon\Carbon;
+
+use App\Http\Controllers\scrapeClass;
 
 class schedule extends Controller
 {
@@ -18,12 +19,14 @@ class schedule extends Controller
         
         $gardCount = session()->get('gardCount');
         $pharmaCount = session()->get('pharmacyCount');
+        $pharmaUpdate = session()->get('pharmacyUpdated');
         $pharmaFails = session()->get('pharmaFails');
 
-        last_scrape_info::where('executedBy', 'App')
+        last_scrape_info::where('executedBy', '=', 'App')
             ->update([
                 'guards_added' => $gardCount,
                 'pharmacies_added' => $pharmaCount,
+                'pharmacies_Updated' => $pharmaUpdate,
                 'pharmacies_fails_count' => $pharmaFails,
                 'updated_at' => Carbon::now()
             ]);
@@ -36,12 +39,14 @@ class schedule extends Controller
        
         $gardCount = session()->get('gardCount');
         $pharmaCount = session()->get('pharmacyCount');
+        $pharmaUpdate = session()->get('pharmacyUpdated');
         $pharmaFails = session()->get('pharmaFails');
 
         last_scrape_info::where('executedBy', 'Cron')
             ->update([
                 'guards_added' => $gardCount,
                 'pharmacies_added' => $pharmaCount,
+                'pharmacies_Updated' => $pharmaUpdate,
                 'pharmacies_fails_count' => $pharmaFails,
                 'updated_at' => Carbon::now()
             ]);

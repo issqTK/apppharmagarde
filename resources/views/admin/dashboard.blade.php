@@ -9,6 +9,7 @@
   @if(Session::has('pharmacyCount') && Session::has('gardCount'))
     <div class="flex justify-around my-2 py-2  text-blue-900 font-semibold bg-blue-100">
       <span class="text-sm">{{ Session::get('pharmacyCount') }} Pharmacies Ajouter</span>
+      <span class="text-sm">{{ Session::get('pharmacyUpdated') }} Pharmacies Updated</span>
       <span class="text-sm">{{ Session::get('gardCount') }} Gards Ajouter</span>
       <?php Session()->pull('pharmacyCount'); Session()->pull('gardCount'); ?>
     </div>

@@ -17,9 +17,9 @@ class AdminController extends Controller
 
   public function updateInfos() {
     $datas = last_scrape_info::select('*')
-              ->orderBy('updated_at', 'DESC')
-              ->limit(10)
-              ->get();
+            ->orderBy('updated_at', 'DESC')
+            ->limit(10)
+            ->get();
     return view('admin/updateinfos')->with(['datas'=> $datas]);
   }
 

@@ -46,7 +46,7 @@
       $startdate = $startdate[2] . '-' . $startdate[1];
       $endDate = explode('-', explode(' ', $pharma->endDate)[0]);
       $endDate = $endDate[2] . '-' . $endDate[1] . '-' . $endDate[0];
-      $location = $pharma->location_url;
+      $gmaps = $pharma->gmaps_url;
 
       $typeGard = explode(':', $pharma->endHoure);
       if($typeGard[0] == '24'){
@@ -68,8 +68,16 @@
         <div class="flex flex-col flex-grow gap-2 align-top w-2/6  ">
 
           <li><a href="tel:{{ $pharma->phone }}" target="_blank" style="background: rgba(3, 180, 198, 0.8);" class="colors block py-2 text-center font-bold capitalize tracking-wider text-xs sm:text-sm rounded ">📞&nbsp; Appeler</a></li>
-
-          <li><a href="{{ $location }}" target="_blank" style="background: rgb(68, 216, 158);" class="colors block py-2 text-center font-bold capitalize tracking-wider text-xs sm:text-sm rounded ">📌&nbsp;Itinéraire</a></li>
+          
+          @if($gmaps != '')
+          <li><a href="{{ $gmaps }}" target="_blank" style="background: rgb(68, 216, 158);" 
+          class="colors block py-2 text-center font-bold capitalize tracking-wider text-xs sm:text-sm rounded ">
+          📌&nbsp;Itinéraire</a></li>
+          @else
+          <li><a href="#" style="background: rgb(68, 216, 158);" disabled 
+          class="text-white cursor-not-allowed block py-2 text-center font-bold capitalize tracking-wider text-xs sm:text-sm rounded ">
+          📌&nbsp;Itinéraire</a></li>
+          @endif
 
         </div>
       </div>

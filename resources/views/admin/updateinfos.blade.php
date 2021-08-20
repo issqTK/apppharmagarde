@@ -2,15 +2,16 @@
 
 @section('content')
 
-<div class="flex md:w-5/6 lg:3/6 w-full mx-auto mt-4 px-2 lg:px-14 md:px-10 sm:px-6">
+<div class="flex md:w-5/6 lg:3/6 w-full mx-auto mt-6 px-2 lg:px-14 md:px-10 sm:px-6">
     <table class="w-full max-w-auto">
             <tr class="bg-gray-200 text-gray-800 font-semibold uppercase text-xs ">
-                <th class="py-3 px-2 md:px-6 text-left">Exec_By</th>
-                <th class="py-3 px-2 md:px-6 text-left">City</th>
-                <th class="py-3 px-2 md:px-6 text-center">Guards_Added</th>
-                <th class="py-3 px-2 md:px-6 text-center">Pharmacies_Added</th>
-                <th class="py-3 px-2 md:px-6 text-center">Fails_Scraper</th>
-                <th class="py-3 px-2 md:px-6 text-center">Time</th>
+                <th class="text-center text-gray-500">Exec_By</th>
+                <th class="text-center text-gray-500">City</th>
+                <th class="text-center text-gray-500">Guards_Added</th>
+                <th class="text-center text-gray-500">Pharmacies_Added</th>
+                <th class="text-center text-gray-500">Pharmacies_Updated</th>
+                <th class="text-center text-gray-500">Fails_Scraper</th>
+                <th class="text-center text-gray-500">Time</th>
             </tr>
         <tbody class="text-gray-600 text-sm font-light">
             @foreach($datas AS $data)
@@ -25,6 +26,9 @@
                 </td>
 
                 <td class="py-3 px-6 text-center">{{$data->pharmacies_added}}
+                </td>
+
+                <td class="py-3 px-6 text-center">{{$data->pharmacies_Updated}}
                 </td>
                 
                 <td class="py-3 px-6 text-center">{{$data->pharmacies_fails_count}}
