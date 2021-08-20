@@ -8,7 +8,7 @@ use App\Models\Pharmacy;
 
 class operationController extends Controller
 {
-    //Upload Csv to mySql
+    //convert Csv to array
     private static function csvToArray($filename = '', $delimiter = ',') {
         if (!file_exists($filename) || !is_readable($filename))
             return false;
@@ -30,6 +30,7 @@ class operationController extends Controller
         
     }
 
+    //transform array to clean array 
     function filterCity($city, $city_id) {
         $data = $this->csvToArray('datas.csv');
         $results = array();
@@ -61,6 +62,7 @@ class operationController extends Controller
        
     }
 
+    //add clean array to mySql table
     function addToPharmacie($city, $city_id) {
         $results = $this->filterCity($city, $city_id);
        
@@ -87,9 +89,9 @@ class operationController extends Controller
 
     }
 
+    //execute addToPharmacie for each city
     function exeCities(){
-        //return $this->addToPharmacie('casablanca', 1);
-        return $this->addToPharmacie('Témara', 14);
+        //return $this->addToPharmacie('cityName', $cityId);
     }
 
 
