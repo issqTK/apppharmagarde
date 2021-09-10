@@ -105,8 +105,10 @@ class scraperController extends Controller
             ->update([
               'name' => $datas[$i]['name'],
               'address' => $datas[$i]['address'],
+              'qualifier' => '1',
             ]);
             $pharmacyUpdated ++;
+
             Gard::create([
               'startDate' =>  $datas[$i]['startDate'], 
               'endDate' =>  $datas[$i]['endDate'], 
@@ -114,6 +116,7 @@ class scraperController extends Controller
               'pharmacy_id' => $pharmacy->id 
             ]);
              $gardCount ++;
+
         } else { 
             $gard = Gard::query()
             ->where("startDate", "=", $datas[$i]['startDate'])
@@ -152,7 +155,7 @@ class scraperController extends Controller
       }
       Session()->put(['pharmacyUpdated' => $pharmacyUpdated]);
       
-      return redirect()->route('dashboard');
+      return redirect()->route('scrapping');
     }
 
     public function scrapeLEMATIN() {
@@ -182,10 +185,11 @@ class scraperController extends Controller
         $page = $client->request('GET', $main_urls[$i]);
       
         $datas[$i]['name'] = trim( str_replace('Pharmacie', '', $page->filter('.lespharmaciengarde h4 a')->first()->text()) );
-        $datas[$i]['address'] = trim( str_replace( 'Adresse :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(1)->text()) );
+        $datas[$i]['address'] = trim( str_replace( 'Adresse :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(1)->text()) ) . ' Casablanca';
         $datas[$i]['phone'] = trim( str_replace('.', '', str_replace('Tél :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(0)->text())) );
         $datas[$i]['startDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(3)->text();
         $datas[$i]['endDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(4)->text();
+        
         
         if( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(2)->children()->count() === 1 ) {
           $datas[$i]['guard-type'] = '24h';
@@ -193,9 +197,11 @@ class scraperController extends Controller
           $datas[$i]['guard-type'] = 'jour';
         } elseif( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(1)->children()->count() === 1 ) {
           $datas[$i]['guard-type'] = 'nuit';
+        } else {
+          $datas[$i]['guard-type'] = '24h';
         }
+        
       }
-
       //INSERT To MySql
       $pharmacyCount = 0;
       $pharmacyUpdated = 0;
@@ -230,6 +236,7 @@ class scraperController extends Controller
             ->update([
               'name' => $datas[$i]['name'],
               'address' => $datas[$i]['address'],
+              'qualifier' => '1',
             ]);
 
             $pharmacyUpdated ++;
@@ -263,6 +270,7 @@ class scraperController extends Controller
         }
 
       }
+      
       $infos = array();
       $infos['pharmacyCount'] = $pharmacyCount;
       $infos['pharmacyUpdated'] = $pharmacyUpdated;
@@ -273,7 +281,6 @@ class scraperController extends Controller
 
     public function scrapeCasa() {
       $infos = $this->scrapeLEMATIN(); 
-      
       $pharmacyCount = $infos['pharmacyCount']; 
       $pharmacyUpdated = $infos['pharmacyUpdated'];
       $gardCount = $infos['gardCount'];
@@ -299,7 +306,7 @@ class scraperController extends Controller
       }
       Session()->put(['pharmacyUpdated' => $pharmacyUpdated]);
       
-      return redirect()->route('dashboard');
+      return redirect()->route('scrapping');
     }
 
     public function scrapeRabat() {

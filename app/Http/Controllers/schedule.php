@@ -31,7 +31,7 @@ class schedule extends Controller
                 'updated_at' => Carbon::now()
             ]);
         
-        return redirect()->route('dashboard');
+        return redirect()->route('scrapping');
     }
 
     public function cron() {

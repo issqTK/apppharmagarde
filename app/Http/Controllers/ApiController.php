@@ -73,16 +73,32 @@ class ApiController extends Controller
         ->get();
 
         $results = array();
-
         for($i = 0; $i < count($datas); $i++){
-            $results[$i]['name'] =  $datas[$i]->name;
-            $results[$i]['address'] =  $datas[$i]->address;
-            $results[$i]['phone'] =  $datas[$i]->phone;
-            $results[$i]['location_url'] =  $datas[$i]->location_url;
-            $results[$i]['lat'] =  $datas[$i]->lat;
-            $results[$i]['long'] =  $datas[$i]->long;
-            $results[$i]['dis'] = $datas[$i]->distance;
+            if($datas[$i]->gmaps_url){
+                $results[$i]['name'] =  $datas[$i]->name;
+                $results[$i]['address'] =  $datas[$i]->address;
+                $results[$i]['phone'] =  $datas[$i]->phone;
+                $results[$i]['startDate'] = $datas[$i]->startDate;
+                $results[$i]['endDate'] = $datas[$i]->endDate;
+                $results[$i]['startHoure'] = $datas[$i]->startHoure;
+                $results[$i]['endHoure'] = $datas[$i]->endHoure;
+                $results[$i]['gmaps_url'] =  $datas[$i]->gmaps_url;
+                $results[$i]['lat'] =  $datas[$i]->lat;
+                $results[$i]['long'] =  $datas[$i]->long;
+                $results[$i]['dis'] = $datas[$i]->distance;
+
+                $typeGard = explode(':', $datas[$i]->endHoure);
+                if($typeGard[0] == '24'){
+                    $results[$i]['garde_label'] = 'Garde ' . $typeGard[0] . '/' . $typeGard[0];
+                } else {
+                    $startHoure = explode(':', $datas[$i]->startHoure);
+                    $startHoure = $startHoure[0] . ':' . $startHoure[1];
+                    $endHoure = $typeGard[0] . ':' . $typeGard[1];
+                    $results[$i]['garde_label'] = 'Ouvert de ' . $startHoure . ' à ' . $endHoure;
+                }
+            } 
         }
+        
         $results = json_encode($results);
         return response()->json($results, 200);
     }

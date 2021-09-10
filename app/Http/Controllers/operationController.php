@@ -90,8 +90,24 @@ class operationController extends Controller
     }
 
     //execute addToPharmacie for each city
-    function exeCities(){
+    function exeTest(){
         //return $this->addToPharmacie('cityName', $cityId);
+        
+        /* $datas = Pharmacy::select('*')
+        ->whereRaw('gmaps_url IS NOT NULL AND name IS NOT NULL')
+        ->get();
+
+        $count = 0;
+
+        for($i = 0; $i < count($datas); $i++) {
+            Pharmacy::where('id', '=', $datas[$i]->id)
+            ->update([
+                'qualifier' => '1',
+            ]);
+            $count++;
+        }
+
+        dd($count); */
     }
 
 

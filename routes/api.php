@@ -22,5 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-//Gards Routes
+//"closer" API ROUTE
 Route::get('/gards/position/{lat}/{long}/', [ApiController::class, 'showcloser']);

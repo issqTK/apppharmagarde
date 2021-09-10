@@ -24,197 +24,99 @@
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-  <style>
-    .active{ background-color: #60A5FA; color: white;  }
-    .colors{ color:white; }
-    .colors:hover{background:rgb(20 142 155 / 80%)!important;}
-    
-    table{ width: 100%; border-collapse: collapse; }
-    table tr:nth-child(even){background-color: #f2f2f2;}
-    table tr:hover {background-color: #ddd;}
-    table td, table th{  
-      max-width: 150px!important;
-      text-align:center;
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-    table th {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      text-align: left;
-      color: white;
-    }
-    table td p{
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden:
-    }
-
-    .contains{
-      margin-bottom: 15px;
-    }
-    .contains li:nth-child(2) input{width:100%; padding:3px 8px; border-radius:5px; border:0.5px solid lightgray}
-  </style>
+  <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
-<nav class="block w-full fixed top-0 bg-white border-b-2 border-blue-400 ">
-    <div class="max-w-7xl mx-auto px-2 lg:px-14 md:px-10 sm:px-6">
-      <div class="relative flex items-center justify-between h-16 md:w-5/6 lg:3/6 w-full mx-auto">
-       
-        <!--Left Side-->
-        <div class="flex">
-          <!--Logo-->
-          <div class="flex-shrink-0 flex items-center">
-            <a href="{{ route('index') }}"><img class="block h-12 w-auto" src="{{ url('/parmagardeLogo.png') }}" alt="Pharmagarde"></a>
-          </div>
 
-          <!--left Nav-->
-          <div class="sm:ml-4 md:ml-6 lg:ml-10 ml-2 flex items-center">
-            <div class="flex relative space-x-4">
-
-              @if(!Session::has('loggedAdmin'))
-
-              <a href="{{ route('index') }}" 
-              class="active text-blue-400 py-2 md:px-3 sm:px-2 px-1 md:text-sm text-xs font-semibold rounded-md" 
-              aria-current="page" id="index">Accueil</a>
-
-              <a href="javascript:void(0)" 
-              class="text-blue-400 py-2 md:px-3 sm:px-2 px-1 md:text-sm text-xs  rounded-md font-medium" 
-              id="cities-menu-button" aria-expanded="false" aria-haspopup="true"> Tout les villes 
-              <ion-icon name="caret-down-outline" class="align-middle" id="fleshdown"></ion-icon> </a>
-
-              <ul id="cities" role="menu" aria-orientation="vertical" aria-labelledby="cities-menu-button" tabindex="-1"
-              class="hidden absolute z-1 right-0 top-11 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" >
-                
-                @foreach($cities as $citie)
-                  
-                <li class="">
-                  <a href="{{ route('display', ['name' => $citie->slug]) }}" 
-                    class="block text-black hover:text-white hover:bg-blue-200 px-6 py-2 text-sm font-medium">
-                    {{ $citie->name }}</a>
-                </li>
-                  
-                @endforeach
-              
-              </ul>
-
-              @else
-
-              <a href="{{ route('dashboard') }}" 
-              class="active text-blue-400 py-2 md:px-3 sm:px-2 px-1 md:text-sm text-xs rounded-md font-medium" aria-current="page">
-              Dashboard</a>
-
-              @endif
-
-            </div>
-          </div>
-
-        </div>
-        <!--end left side-->
-
-        <!--Right Side -->
-        <div class="flex">
-            @if(!Session::has('loggedAdmin'))
-
-            <div class="flex items-center">
-
-              <a href="{{ route('login') }}" style="letter-spacing:1px;"
-              class="uppercase py-2 md:px-3 sm:px-2 px-1 text-xs font-semibold bg-blue-100 text-center text-blue-900 rounded" >
-              <ion-icon name="log-in-outline" class="md:text-lg text-sm" style="vertical-align:bottom"></ion-icon>
-              &nbsp;
-              Admin Login</a>
-              
-            </div>
-
-            @else
-
-            <div class="flex items-center relative">
-              <a href="javascript:void(0)" class="text-sm font-semibold text-blue-400" id="admin-button">
-                <span>{{ Session::get('loggedAdmin')->username }}</span>
-                <ion-icon name="caret-down-outline" class="align-middle" id="fleshdown"></ion-icon>
-              </a>
-              
-              <div class="hidden z-10 absolute right-0 text-sm top-8 bg-white" id="admin-popup">
-                <ul class="bg-blue-400 text-white py-2">
-                  <li class="border-b-1 border-blue-100"><a href="{{ route('updateInfos') }}" style="width:150px"  
-                  class="block p-2 hover:bg-white hover:text-blue-400">
-                  Last Updates Infos</a></li>
-
-                  <li class="border-b-1 border-blue-100"><a href="{{ route('getGesPharma') }}" style="width:150px"  
-                  class="block p-2 hover:bg-white hover:text-blue-400">
-                  Gestion Pharmacies</a></li>
-    <hr>
-                  <li class="">
-                    <form action="{{ route('logout') }}" method="post" class="w-full">
-                      @csrf 
-                      <button type="submit" class="w-full p-2 text-left hover:bg-white hover:text-blue-400">Logout</button> 
-                    </form>
-                  </li>
-                </ul>
-              </div>
-              
-            </div>
-
-            @endif
-
-        </div> 
-        <!--end right side-->
-
-      </div>
+<nav id="mainNav">
+    <span id="hideNav">
+        <ion-icon name="close-circle-outline"></ion-icon>
+    </span>
+    
+    <!--Logo-->
+    <div class="logo">
+        <a href="{{ route('index') }}"> <img src="{{ url('/logo.jpg') }}" alt="Pharmagarde" draggable="false"> </a>
     </div>
+    
+@if(!Session::has('loggedAdmin'))
+    
+    <a href="{{ route('login') }}" class="login">
+        <ion-icon name="log-in-outline" class="md:text-xl text-sm" style="vertical-align:bottom"></ion-icon>
+        &nbsp;
+        Se Connecter
+    </a>
+    
+@else    
+    
+    <div class="user-nav" id="admin-button">
+        <img src="{{url('/user.jpg')}}" alt="user_picture" />
+        <span class="font-semibold" id="admin-button">
+            {{ Session::get('loggedAdmin')->username }}
+            <ion-icon name="caret-down-outline" class="align-middle" id="fleshdown"></ion-icon>
+        </span>
+        <div class="logout">
+            <a href="{{ route('logout') }}" id="admin-popup">Se déconnecter</a>
+        </div>
+    </div>
+    
+@endif
+    
+    <ul class="nav">
+        
+        <li class="subnav"><a href="{{ route('index') }}" class="click-subnav">Dashboard</a></li>
+        
+        <li class="subnav">
+            <a href="javascript:void(0)" class="click-subnav">Garde</a>
+            <div class="block">
+                <ul>
+                    <li><a href="{{ route('listergarde') }}">Lister</a></li>
+                    <li><a href="{{ route('listergardeframe') }}">Lister Iframe</a></li>
+                    <li><a href="{{ route('viewAddGarde') }}">Ajouter</a></li>
+                </ul>
+            </div>
+        </li>
+        
+        <li class="subnav">
+            <a href="javascript:void(0)" class="click-subnav">Pharmacie</a>
+            <div  class="block">
+                <ul>
+                    <li><a href="{{ route('getGesPharma') }}">Gérer Pharmacies</a></li>
+                    <li><a href="{{ route('viewAddPharma') }}">Ajouter une Pharmacie</a></li>
+                    <li><a href="{{ route('viewdeleteGarde') }}">Supprimer une Pharmacie</a></li>
+                </ul>
+            </div>
+        </li>
+        
+        <li class="subnav">
+            <a href="javascript:void(0)" class="click-subnav">Scraping</a>
+            <div class="block">
+                <ul>
+                    <li><a href="{{ route('updateInfos') }}">Activité</a></li>
+                    <li><a href="{{ route('scrapping') }}">Administrer Scraping</a></li>
+                </ul>
+            </div>
+        </li>
+        
+        <li><a href="#">Contact</a></li>
+    </ul>
+    
 </nav>
-<div class="block h-16 border"></div>
+  
+<div class="fake"></div>
+    
+<div  class="mainpage">
+    <span id="showNav">
+        <ion-icon name="apps-outline"></ion-icon>
+    </span>
+    
+    <div class="hideMain"></div>
+    
 @yield('content')
+    
+</div>
+    
+<script src="{{ url('./js/custom.js') }}"></script>
 
-
-<script>
-$( function(){
-    var pathname = $(location).attr('pathname');
-    var regex = new RegExp('^/pharmacie-de-garde-[a-z]*[a-z]*$');
-
-    if (!regex.test(pathname)) {
-      $('#cities-menu-button').click(function(){
-        $('#cities').stop().fadeToggle();
-        if(!$(this).hasClass('active')) { $(this).addClass('active'); $('#index').removeClass('active'); }
-        else { $(this).removeClass('active'); $('#index').addClass('active'); }
-      });
-      $('body').click(function(event){
-        var target = $(event.target);
-        if(!target.parents().is("#cities-menu-button") && !target.is("#cities-menu-button") && !target.is('#cities') && !target.parents().is('#cities')){
-            $('#cities').stop().fadeOut();
-            $("#cities-menu-button").removeClass('active');
-            $('#index').addClass('active');
-        }
-      });
-
-    } else {
-      $("#cities-menu-button").addClass('active');
-      $('#index').removeClass('active');
-      $('#cities-menu-button').click(function(){ $('#cities').stop().fadeToggle(); });
-      $('body').click(function(event){
-        var target = $(event.target);
-        if(!target.parents().is("#cities-menu-button") && !target.is("#cities-menu-button") && !target.is('#cities') && !target.parents().is('#cities')){
-            $('#cities').stop().fadeOut();
-        }
-      });
-    }
-
-    $('#admin-button').click(function(){ $('#admin-popup').stop().fadeToggle(); });
-
-    $('body').click(function(event){
-      var target = $(event.target);
-      if(!target.parents().is("#admin-button") && !target.parents().is("#admin-popup") ){
-          $('#admin-popup').stop().fadeOut();
-      }
-    });
-
-    $('#register').click(function(){ $('#loginPopup').hide(); $('#registerPopup').show(); });
-    $('#login').click(function(){ $('#loginPopup').show(); $('#registerPopup').hide(); });
-
-    $('.show').click(function(){  $(this).hide(); $(this).siblings().show();  });
-
-});
-</script>
 </body>
 
 </html>

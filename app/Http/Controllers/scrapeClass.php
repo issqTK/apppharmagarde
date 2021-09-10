@@ -21,6 +21,7 @@ class scrapeClass extends Controller
     public $pharmacyCount = 0;
     public $pharmacyUpdated = 0;
     public $gardCount = 0;
+    
     public function scrape($url, $cityName, $cityID) {
         $client = new Client(); $mainPage = $client->request('GET', $url);
 
