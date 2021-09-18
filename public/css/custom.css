@@ -1,21 +1,29 @@
-/*APP*/
+/*NAV*/
 
-nav{position: relative; width:25%; padding: 8px; position: fixed; top:0; left:0; bottom: 0; box-shadow: 1px 2px 5px darkgrey; z-index: 3; background: white;     min-width: 280px }
-
+nav{
+    position: relative; 
+    width:25%; 
+    padding: 8px; 
+    position: fixed; 
+    top:0; 
+    left:0; 
+    bottom: 0; 
+    box-shadow: 1px 2px 5px darkgrey; 
+    z-index: 3; 
+    background: white;     
+    min-width: 280px }
 nav > span{
     display: none;
     position: absolute;
     top: 0; right:0; 
-    width: 30px; height: 30px;
-}
+    width: 30px; height: 30px; }
 nav > span > ion-icon{
-      font-size: 1.5em;
+    font-size: 1.5em;
     display: table; margin: 1.5px auto;
-    cursor: pointer;
-}
+    cursor: pointer; }
 
-nav>.logo{ width:100%; }
-nav>.logo img{ display: block; max-width:150px; margin: auto;}
+nav > .logo{ width:100%; }
+nav > .logo img{ display: block; max-width:150px; margin: auto;}
 
 nav > .login{
     display: table;
@@ -28,23 +36,19 @@ nav > .login{
     border-radius: 5px;
     font-size: 0.95em;
     text-transform: uppercase;
-     border: 0;
-}
+    border: 0; }
+
 nav .user-nav{
     position: relative;
     display: table;
     margin: auto;
-    margin-top: 15px;
-    
-}
+    margin-top: 15px; }
 nav .user-nav > img{
-   display: inline-block; width:auto; 
+    display: inline-block; 
     width: 50px;
     height: 45px;
     vertical-align: top;
-    overflow: hidden;
-    
-}
+    overflow: hidden; }
 nav .user-nav > span{
     display: inline-block; width:auto; 
     margin-left: 10px;
@@ -53,41 +57,41 @@ nav .user-nav > span{
     letter-spacing: 0.5px;
     font-size: 0.95em;
     font-weight: bold;
-    
     color: white;
     background-color: rgb(68, 216, 158);
     border-radius: 5px;
     vertical-align: bottom;
-    cursor: pointer;
-}
+    cursor: pointer; }
 nav .user-nav >div{
     display: table;
     position: absolute;
     right: 0;
-    padding: 8px 0;
-}
-nav .user-nav >div>a{
+    padding: 8px 0; }
+nav .user-nav > div > a{
     display: none;
     font-size: 0.9em;
     font-weight: bold;
     text-transform: uppercase;
     z-index: 1;
     padding: 5px 8px;
-    
     color: white;
     background-color:rgba(3, 180, 198, 0.8);
-    
-    
-    border-radius: 3px;
-}
+    border-radius: 3px; }
 
-.nav{position: absolute; bottom: 8px; left:8px; right:8px; height: 75%;
-    background: url(../background-nav.jpg); background-attachment: fixed; background-size: contain; background-origin: content-box;
-}
-.nav>li{ width: 100%; padding: 0;}
-.nav>li:last-child{ position: absolute; bottom: 0; border-top: 0.5px solid floralwhite }
+.nav{
+    position: absolute; 
+    bottom: 8px; 
+    left:8px; 
+    right:8px; 
+    height: 75%;
+    background: url(../background-nav.jpg); 
+    background-attachment: fixed; 
+    background-size: contain; 
+    background-origin: content-box; }
+.nav > li{ width: 100%; padding: 0;}
+.nav > li:last-child{ position: absolute; bottom: 0; border-top: 0.5px solid floralwhite }
 
-.nav>li>a{
+.nav > li > a{
     display: block;
     padding: 10px 50px; 
     font-size: 0.9em;
@@ -95,12 +99,10 @@ nav .user-nav >div>a{
     text-transform: uppercase;
     letter-spacing: 1px;
     color: floralwhite;
-    border-bottom: 0.5px solid
-}
-.nav>li>a:hover{ background: #57CC99; }
+    border-bottom: 0.5px solid }
+.nav > li > a:hover{ background: #57CC99; }
 
 .nav .block{ display: none; background-color: whitesmoke; }
-
 .nav .block ul li a{
     display: block;
     padding: 10px 50px;
@@ -109,25 +111,29 @@ nav .user-nav >div>a{
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #22577A;
-    border-bottom: 0.5px solid rgb(20 142 155 / 80%)
-}
+    border-bottom: 0.5px solid rgb(20 142 155 / 80%) }
 .nav .block ul li a:hover{ background:rgba(3, 180, 198, 0.8); color: white; }
 
 .fake{ width: 30%; }
 
-.mainpage{ position: relative; display: block; width:70%; height:auto; margin: 25px 2% 0 2%; }
+/*MAIN*/
 
-.mainpage span{
+.mainpage{ 
+    position: relative; 
+    display: block; 
+    width:70%; 
+    height:auto; 
+    margin: 25px 2% 0 2%; }
+
+#showNav{
     display: none;
     position: absolute;
     top: -10px; left:0; 
-    width: 30px; height: 30px;
-}
-.mainpage span ion-icon{
+    width: 30px; height: 30px; }
+#showNav ion-icon{
     font-size: 1.5em;
     display: table; margin: 1.5px auto;
-    cursor: pointer;
-}
+    cursor: pointer; }
 
 .mainpage .hideMain{
     display: none;
@@ -138,13 +144,8 @@ nav .user-nav >div>a{
     left: 0;
     background-color: grey;
     opacity: 0.8;
-    z-index: 2;
-}
+    z-index: 2; }
 
-body{
-    display: flex;
-    flex-direction: row;
-}
 /*INDEX*/
 
 .bref{
@@ -154,8 +155,7 @@ body{
     margin-bottom: 15px;
     background-color:aliceblue;
     opacity: 0.9;
-    border-radius: 2;
-}
+    border-radius: 2; }
 .bref > h4 {
     padding: 0 35px;
     line-height: 35px;
@@ -163,8 +163,7 @@ body{
      word-spacing: 1px;
     color: black;
     text-shadow: 1px 2px 3px white;
-    background-color:white
-}
+    background-color:white }
 .bref > p{
     display: table;
     margin: auto;
@@ -173,19 +172,16 @@ body{
     text-align: left;
     letter-spacing: 0.5px;
     word-spacing: 1px;  
-    max-width: 80%;
-}
+    max-width: 80%; }
 .welcom > .secondP>strong{
-    font-size: 0.9em;
-}
+    font-size: 0.9em; }
 .index-contains{
     display: table;
     margin: auto;
     min-width: 80%;
     padding: 8px 10px;
     margin-bottom: 25px;
-    vertical-align: top;
-}
+    vertical-align: top; }
 .index-contains h3{
     padding: 8px;
     font-weight: bold;
@@ -196,20 +192,16 @@ body{
     border-top-right-radius: 3px;
 
     color: floralwhite;
-    background: rgba(3, 180, 198, 0.8);
-}
+    background: rgba(3, 180, 198, 0.8); }
 .index-contains ul li a{
     display: block;
     margin: 5px 0;
     padding: 5px 8px;
     color: rgb(20 142 155 / 80%);
-    border-bottom: 0.5px solid rgb(20 142 155 / 80%)
-        
-}
+    border-bottom: 0.5px solid rgb(20 142 155 / 80%) }
 .index-contains ul li a:hover{
     color: white;
-    background-color: rgb(20 142 155 / 80%);
-}
+    background-color: rgb(20 142 155 / 80%); }
 
 /*GARDS*/
 .top-nav > a:hover{ background:rgb(20 142 155 / 80%);}
@@ -219,8 +211,7 @@ body{
 
 .iframeitem{
     width: 80%;
-    margin: auto;
-}
+    margin: auto; }
 .iframeitem > a{ 
     display: inline-block;
     width: 47.5%;
@@ -228,32 +219,24 @@ body{
     margin:0 1% 15px 1%;
     font-weight: 500;
     border-radius: 2px;
-    background-color:rgba(3, 180, 198, 0.8); color:white 
-}
+    background-color:rgba(3, 180, 198, 0.8); color:white }
 .iframeitem>a:hover{ background:rgb(20 142 155 / 80%);}
 
 /*GEST PHARMACIES*/
 .getion-pharma{
     width:80%;
-    margin: auto;
-    
-}
+    margin: auto; }
 .getion-pharma  div{
     padding: 8px;
-    margin-bottom: 10px;
-    
-}
+    margin-bottom: 10px; }
 .getion-pharma  div > .label{ display: table;}
-.getion-pharma  div >label{
-    color:darkslategrey;
-}
+.getion-pharma  div >label{ color:darkslategrey; }
 .getion-pharma div > input[type="text"], .getion-pharma div > select{
     display: block;
     width:100%;
     padding: 5px 8px;
     border: 0.5px solid darkslategrey;
-    border-radius: 3px;
-}
+    border-radius: 3px; }
 
 /*EDIT*/
 .edit, .add{ width:80%; margin:auto; }
@@ -261,8 +244,8 @@ body{
     padding: 8px 15px;
     margin-bottom: 15px;
     background:aliceblue;
-    border-radius: 2px;
-}
+    border-radius: 2px; }
+
 .add .contains:nth-child(10){ background: white;}
 .add .contains:nth-child(9){ margin-bottom: 25px!important;} 
 
@@ -272,10 +255,9 @@ body{
 .contains input[type="text"],.contains select{
     width: 100%;
     padding: 8px 10px;
-    border-radius: 3px;
-}
+    border-radius: 3px; }
 
-.message, .submessage{margin-bottom: 15px;}
+.message, .submessage{ margin-bottom: 15px; }
 
 .message .success > h4, .message .fails > h4, .submessage .fails > h4{
     font-weight: 500;
@@ -284,55 +266,38 @@ body{
     padding:4px 0;
     text-align: center;
     color: white;
-    border-radius: 2px;
-}
-.message .fails > h4,  .submessage .fails > h4{
-    background:rgba(243, 26, 26, 0.795);
-}
-.message .success > h4{
-    background: rgb(68, 216, 158);
-}
+    border-radius: 2px; }
+.message .fails > h4,  .submessage .fails > h4{ background:rgba(243, 26, 26, 0.795); }
+.message .success > h4{ background: rgb(68, 216, 158); }
 
 .message .fails > p, .message .success > p,  .submessage .fails > p{
     font-size: 1em;
     font-weight: bold;
     padding: 8px 0;
-    text-align: center;
-}
-.message .fails > p,  .submessage .fails > p{
-    color: rgba(243, 26, 26, 0.795);
-}
-.message .success >p{
-    color: rgb(68, 216, 158);
-}
+    text-align: center; }
+.message .fails > p,  .submessage .fails > p{ color: rgba(243, 26, 26, 0.795); }
+.message .success > p{ color: rgb(68, 216, 158); }
 .addgarde, .deletePharma{ width:80%; margin:auto; }
 
-.addgarde label, .deletePharma label{
-    display: block;
-    color:darkslategrey;
-}
+.addgarde label, .deletePharma label{ display: block; color:darkslategrey; }
 .addgarde input[type="text"], .addgarde input[type="datetime-local"], .addgarde select, .deletePharma input[type="text"]{
     display: block;
     width: 100%;
     padding: 8px 10px;
     border-radius: 3px;
-    border: 1px solid darkslategrey;
-}
+    border: 1px solid darkslategrey; }
 .addgarde input[type="submit"], .deletePharma input[type="submit"]{
     display: table;
-    margin: 15px 0;
-}
+    margin: 15px 0; }
 
 .listed{
     padding: 8px 15px;
     margin-bottom: 25px;
     background:aliceblue;
-    border-radius: 2px;
-}
+    border-radius: 2px; }
 .inside-listed{
     height: 150px;
-    overflow-y: hidden;
-}
+    overflow-y: hidden; }
 .listed > a{
     display: block;
     padding: 8px 0;
@@ -384,6 +349,9 @@ body{
 /*LOGIN REGISTER*/
 
 /*RESET*/
+body{
+    display: flex;
+    flex-direction: row; }
 .colors{ color:white; }
 .colors:hover{background:rgb(20 142 155 / 80%)!important;}
 
