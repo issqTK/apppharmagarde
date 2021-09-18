@@ -21,7 +21,7 @@ Route::get('/', [userController::class, 'index'])->name('index');
 
 Route::get("/pharmacie-de-garde-iframe", function(){ $cities = City::All(); return view('displayframe', ['cities' => $cities]); })->name('listergardeframe');
 
-Route::get("/pharmacie-de-garde-{name}-iframe", [userController::class, 'displayframe'])->name('displayframe');
+Route::get("/pharmacie-de-garde-{name}-frame", [userController::class, 'displayframe'])->name('displayframe');
 
 Route::get("/pharmacie-de-garde", function(){ if(Session()->has('pharmacies') ) { Session()->pull('pharmacies'); } $cities = City::All(); return view('pharmacygards', ['cities' => $cities]); })->name('listergarde');
 
