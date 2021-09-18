@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddQualifierBooleanToPharmacy extends Migration
+class AddQualified extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddQualifierBooleanToPharmacy extends Migration
     public function up()
     {
         Schema::table('pharmacies', function (Blueprint $table) {
-            $table->boolean('qualifier')->default(0)->after('id');
+            $table->boolean('qualifier')->nullable()->after('id');
         });
     }
 
