@@ -9,8 +9,7 @@
     <div class="iframeitem">
         @foreach($cities as $city)
         <a href="{{ route('displayframe', ['name' => $city->slug]) }}">
-            Affiche Iframe 
-            <span class="font-bold uppercase text-sm" >{{ $city->name }}</span>
+            Affiche Iframe {{ $city->name }}
         </a>
         @endforeach
      </div>

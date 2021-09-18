@@ -28,6 +28,7 @@
 <div style="width:80%" class="max-w-2xl mt-6 mx-auto ">
   <ul class="w-full grid grid-cols divide-y divide-gray-200">
     @foreach(Session('pharmacies') AS $pharma)
+    
     <?php
     $startdate = explode('-', explode(' ', $pharma->startDate)[0]);
     $startdate = $startdate[2] . '-' . $startdate[1];
@@ -35,6 +36,7 @@
     $endDate = $endDate[2] . '-' . $endDate[1] . '-' . $endDate[0];
     $typeGard = explode(':', $pharma->endHoure);
     $gmaps = $pharma->gmaps_url;
+    
     if($typeGard[0] == '24'){
       $gard = 'Garde ' . $typeGard[0] . '/' . $typeGard[0];
     } else {
@@ -46,8 +48,11 @@
     ?>
     <div style="font-family:Poppins, serif;" class="flex flex-row px-2 py-3  ">
       <div class="w-4/6  flex flex-col flex-shrink gap-1">
-        <li style="color:#3B3B3B" class="text-base font-bold">Pharmacie <span style="font-size:0.9em; letter-spacing:1px;">{{ $pharma->name }}</span></li>
+        <li style="color:#3B3B3B" class="text-base font-bold">Pharmacie {{ $pharma->name }}
+        </li>
+
         <li style="color:rgb(53, 204, 128);" class="text-sm font-semibold">{{ $gard }}</li>
+
         <li  style="color:#3B3B3B" class="text-xs">{{ $pharma->address }}</li>
       </div>
 
