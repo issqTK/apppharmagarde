@@ -20,7 +20,8 @@ class scraperController extends Controller
 
       $results = array();
       $pharmaFails = 0;
-      for($i = 0; $i < count($urls); $i++){
+      $index = 0;
+      for($i = 0; $i < count($urls); $i++) {
         try {
             $page = $client->request('GET', $urls[$i]);
             $name = trim(mb_strtoupper(str_replace('Pharmacie', '', $page->filter('div.col-xs-12 h1')->text())));
@@ -56,25 +57,29 @@ class scraperController extends Controller
             $endDateMax = $endDateMax . ' 23:59:00';
             $guard_type = trim(str_replace('Garde', '', $page->filter('table.pharma_history tr')->last()->filter('td')->eq(2)->text()));
             
-            $results[$i]['name'] = $name;
-            $results[$i]['address'] = $address;
-            $results[$i]['city'] = $city;
-            $results[$i]['phone'] = $phone;
-            $results[$i]['location'] = $location;
-            $results[$i]['lat'] = $lat;
-            $results[$i]['long'] = $long;
-            $results[$i]['startDate'] = $startDateMax;
-            $results[$i]['endDate'] = $endDateMax;
-            
-            if(preg_match('/^Jour et Nuit$/i', $guard_type)) { $results[$i]['guard-type'] = '24h'; }
-            elseif(preg_match('/^Jour$/i', $guard_type)) { $results[$i]['guard-type'] = 'jour'; }
-            elseif(preg_match('/^Nuit$/i', $guard_type)){ $results[$i]['guard-type'] = 'nuit'; }
-            else { $results[$i]['guard-type'] = '24h'; }
+            if(preg_match('/^[0-9]{10}$/', $phone)){
+              $results[$index]['name'] = $name;
+              $results[$index]['address'] = $address;
+              $results[$index]['city'] = $city;
+              $results[$index]['phone'] = $phone;
+              $results[$index]['location'] = $location;
+              $results[$index]['lat'] = $lat;
+              $results[$index]['long'] = $long;
+              $results[$index]['startDate'] = $startDateMax;
+              $results[$index]['endDate'] = $endDateMax;
+              
+              if(preg_match('/^Jour et Nuit$/i', $guard_type)) { $results[$index]['guard-type'] = '24h'; }
+              elseif(preg_match('/^Jour$/i', $guard_type)) { $results[$index]['guard-type'] = 'jour'; }
+              elseif(preg_match('/^Nuit$/i', $guard_type)){ $results[$index]['guard-type'] = 'nuit'; }
+              else { $results[$index]['guard-type'] = '24h'; }
+
+              $index++;
+            }
               
           } catch (\Exception $e) { $pharmaFails++; continue; }
           
       }
-
+      
       //reindex
       $arrays = $results; $datas = array(); $i=0;
       foreach($arrays as $k => $item){ $datas[$i] = $item; unset($arrays[$k]);   $i++; }
@@ -88,6 +93,7 @@ class scraperController extends Controller
         $pharmacy = Pharmacy::query()->where("phone", "=", $datas[$i]['phone'])->first();
         if (!$pharmacy) {
             $resultpharma = Pharmacy::create([ 
+              'qualifier' => 0,
               'name' =>  $datas[$i]['name'], 
               'address' =>  $datas[$i]['address'],
               'phone' =>  $datas[$i]['phone'], 
@@ -96,17 +102,27 @@ class scraperController extends Controller
               'long' =>  $datas[$i]['long'],
               'city_id' => $cityID 
             ]);
+
             $pharmacyCount ++;
-            Gard::create([ 'startDate' =>  $datas[$i]['startDate'], 'endDate' =>  $datas[$i]['endDate'],
-                'guard_type' =>  $datas[$i]['guard-type'], 'pharmacy_id' => $resultpharma->id ]);
+            
+            Gard::create([ 
+              'startDate' =>  $datas[$i]['startDate'], 
+              'endDate' =>  $datas[$i]['endDate'],
+              'guard_type' =>  $datas[$i]['guard-type'], 
+              'pharmacy_id' => $resultpharma->id 
+            ]);
             $gardCount ++;
-        } elseif( $pharmacy->name == null ) {
+
+           
+
+        } elseif( $pharmacy->qualifier === NULL ) {
             Pharmacy::where('id', '=', $pharmacy->id)
             ->update([
               'name' => $datas[$i]['name'],
               'address' => $datas[$i]['address'],
-              'qualifier' => '1',
+              'qualifier' => 1,
             ]);
+
             $pharmacyUpdated ++;
 
             Gard::create([
@@ -115,22 +131,25 @@ class scraperController extends Controller
               'guard_type' =>  $datas[$i]['guard-type'],
               'pharmacy_id' => $pharmacy->id 
             ]);
-             $gardCount ++;
+             $gardCount ++; 
 
         } else { 
-            $gard = Gard::query()
-            ->where("startDate", "=", $datas[$i]['startDate'])
-            ->where("endDate", "=", $datas[$i]['endDate'])
-            ->where('pharmacy_id', '=', $pharmacy->id)
-            ->count();
-            if(!$gard) {
-                Gard::create([ 
-                  'startDate' =>  $datas[$i]['startDate'], 
-                  'endDate' =>  $datas[$i]['endDate'], 
-                  'guard_type' =>  $datas[$i]['guard-type'],
-                  'pharmacy_id' => $pharmacy->id ]);
-                $gardCount ++;
-            }
+          $gard = Gard::query()
+          ->where("startDate", "=", $datas[$i]['startDate'])
+          ->where("endDate", "=", $datas[$i]['endDate'])
+          ->where('pharmacy_id', '=', $pharmacy->id)
+          ->count();
+
+          if(!$gard) {
+            Gard::create([ 
+              'startDate' =>  $datas[$i]['startDate'], 
+              'endDate' =>  $datas[$i]['endDate'], 
+              'guard_type' =>  $datas[$i]['guard-type'],
+              'pharmacy_id' => $pharmacy->id 
+            ]);
+
+            $gardCount ++;
+          }
         }
 
       }
@@ -168,40 +187,46 @@ class scraperController extends Controller
 
       for($i = 0; $i < count($urls); $i++) {
         $page = $client->request('GET', $urls[$i]);
-      
         $sub_urls[$i] = $page->filter('.lespharmaciengarde .pharmacie')->each(function($item) {
           return 'https://lematin.ma' . $item->filter('h5 a')->attr('href');
         });
-        
       }
 
       $main_urls = array();
+
       foreach ($sub_urls as $url) {
           $main_urls = array_merge($main_urls, $url);
       }
 
       $datas = array();
+      $index = 0;
       for($i = 0; $i < count($main_urls); $i++) {
         $page = $client->request('GET', $main_urls[$i]);
       
-        $datas[$i]['name'] = trim( str_replace('Pharmacie', '', $page->filter('.lespharmaciengarde h4 a')->first()->text()) );
-        $datas[$i]['address'] = trim( str_replace( 'Adresse :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(1)->text()) ) . ' Casablanca';
-        $datas[$i]['phone'] = trim( str_replace('.', '', str_replace('Tél :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(0)->text())) );
-        $datas[$i]['startDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(3)->text();
-        $datas[$i]['endDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(4)->text();
+        $phone = trim(  str_replace(' ', '', str_replace('.', '', str_replace('Tél :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(0)->text())) ) );
         
-        
-        if( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(2)->children()->count() === 1 ) {
-          $datas[$i]['guard-type'] = '24h';
-        } elseif ( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(0)->children()->count() === 1 ) {
-          $datas[$i]['guard-type'] = 'jour';
-        } elseif( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(1)->children()->count() === 1 ) {
-          $datas[$i]['guard-type'] = 'nuit';
-        } else {
-          $datas[$i]['guard-type'] = '24h';
+        if(preg_match('/^[0-9]{10}$/', $phone)) {
+            $datas[$index]['phone'] = $phone;
+            $datas[$index]['name'] = trim( str_replace('Pharmacie', '', $page->filter('.lespharmaciengarde h4 a')->first()->text()) );
+            $datas[$index]['address'] = trim( str_replace( 'Adresse :', '', $page->filter('.lespharmaciengarde .infos .col-lg-8 p')->eq(1)->text()) ) . ' Casablanca';
+            $datas[$index]['startDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(3)->text() . ' 08:00:00';
+            $datas[$index]['endDate'] = $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(4)->text() . ' 23:59:00';
+
+            if( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(2)->children()->count() === 1 ) {
+              $datas[$index]['guard-type'] = '24h';
+            } elseif ( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(0)->children()->count() === 1 ) {
+              $datas[$index]['guard-type'] = 'jour';
+            } elseif( $page->filter('.lespharmaciengarde .infos .col-lg-12 .table tr:nth-child(2) td')->eq(1)->children()->count() === 1 ) {
+              $datas[$index]['guard-type'] = 'nuit';
+            } else {
+              $datas[$index]['guard-type'] = '24h';
+            }
+
+            $index ++;
         }
         
       }
+      
       //INSERT To MySql
       $pharmacyCount = 0;
       $pharmacyUpdated = 0;
@@ -213,6 +238,7 @@ class scraperController extends Controller
         
         if (!$pharmacy) {
             $resultpharma = Pharmacy::create([ 
+              'qualifier' => 0,
               'name' =>  $datas[$i]['name'], 
               'address' =>  $datas[$i]['address'],
               'phone' =>  $datas[$i]['phone'], 
@@ -231,12 +257,12 @@ class scraperController extends Controller
             $gardCount ++;
 
         } 
-        elseif( $pharmacy->name == null ) {
+        elseif( $pharmacy->qualifier === NULL ) {
             Pharmacy::where('id', '=', $pharmacy->id)
             ->update([
               'name' => $datas[$i]['name'],
               'address' => $datas[$i]['address'],
-              'qualifier' => '1',
+              'qualifier' => 1,
             ]);
 
             $pharmacyUpdated ++;

@@ -34,7 +34,7 @@ class UserController extends Controller
                         ->where('pharmacies.city_id', $ct->id)
                         ->whereRaw("gards.guard_type = configs.guard_type AND Now() BETWEEN gards.startDate AND gards.endDate AND NOW() BETWEEN configs.startHoure AND configs.endHoure AND gards.startDate IN (SELECT max(gards.startDate) FROM gards INNER JOIN pharmacies WHERE gards.pharmacy_id = pharmacies.id AND pharmacies.city_id = {$ct->id})")
                         ->get();
-
+        
         session()->put('pharmacies', $pharmacies);
     }
 

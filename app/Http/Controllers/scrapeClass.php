@@ -29,6 +29,7 @@ class scrapeClass extends Controller
         ->each(function($i) { return 'https://www.annuaire-gratuit.ma' . $i->attr('href'); });
 
         $results = array();
+        $index = 0;
         for($i = 0; $i < count($urls); $i++){
             try {
                 $page = $client->request('GET', $urls[$i]);
@@ -66,20 +67,24 @@ class scrapeClass extends Controller
 
                 $guard_type = trim(str_replace('Garde', '', $page->filter('table.pharma_history tr')->last()->filter('td')->eq(2)->text()));
                 
-                $results[$i]['name'] = $name;
-                $results[$i]['address'] = $address;
-                $results[$i]['city'] = $city;
-                $results[$i]['phone'] = $phone;
-                $results[$i]['location'] = $location;
-                $results[$i]['lat'] = $lat;
-                $results[$i]['long'] = $long;
-                $results[$i]['startDate'] = $startDateMax;
-                $results[$i]['endDate'] = $endDateMax;
-                
-                if(preg_match('/^Jour et Nuit$/i', $guard_type)) { $results[$i]['guard-type'] = '24h'; }
-                elseif(preg_match('/^Jour$/i', $guard_type)) { $results[$i]['guard-type'] = 'jour'; }
-                elseif(preg_match('/^Nuit$/i', $guard_type)){ $results[$i]['guard-type'] = 'nuit'; }
-                else { $results[$i]['guard-type'] = '24h'; }
+                if(preg_match('/^[0-9]{10}$/', $phone)) {
+                    $results[$index]['name'] = $name;
+                    $results[$index]['address'] = $address;
+                    $results[$index]['city'] = $city;
+                    $results[$index]['phone'] = $phone;
+                    $results[$index]['location'] = $location;
+                    $results[$index]['lat'] = $lat;
+                    $results[$index]['long'] = $long;
+                    $results[$index]['startDate'] = $startDateMax;
+                    $results[$index]['endDate'] = $endDateMax;
+                    
+                    if(preg_match('/^Jour et Nuit$/i', $guard_type)) { $results[$index]['guard-type'] = '24h'; }
+                    elseif(preg_match('/^Jour$/i', $guard_type)) { $results[$index]['guard-type'] = 'jour'; }
+                    elseif(preg_match('/^Nuit$/i', $guard_type)){ $results[$index]['guard-type'] = 'nuit'; }
+                    else { $results[$index]['guard-type'] = '24h'; }
+
+                    $index++;
+                }
                 
             } catch (\Exception $e) { $this->pharmacyFails++; continue; }
             
@@ -92,11 +97,11 @@ class scrapeClass extends Controller
     
         /*insert to mysql*/
         for($i = 0; $i < count($datas); $i++) {
-            $pharmacy = Pharmacy::query()
-                        ->where('phone', '=', $datas[$i]['phone'])
-                        ->first();
+            $pharmacy = Pharmacy::query()->where('phone', '=', $datas[$i]['phone'])->first();
+
             if (!$pharmacy) {
                 $resultpharma = Pharmacy::create([ 
+                    'qualifier' => 0,
                     'name' =>  $datas[$i]['name'], 
                     'address' =>  $datas[$i]['address'],
                     'phone' =>  $datas[$i]['phone'], 
@@ -105,23 +110,35 @@ class scrapeClass extends Controller
                     'long' =>  $datas[$i]['long'],
                     'city_id' => $cityID 
                 ]);
+
                 $this->pharmacyCount ++;
-                Gard::create([ 'startDate' =>  $datas[$i]['startDate'], 'endDate' =>  $datas[$i]['endDate'],
-                    'guard_type' =>  $datas[$i]['guard-type'], 'pharmacy_id' => $resultpharma->id ]);
+
+                Gard::create([ 
+                    'startDate' =>  $datas[$i]['startDate'], 
+                    'endDate' =>  $datas[$i]['endDate'],
+                    'guard_type' =>  $datas[$i]['guard-type'], 
+                    'pharmacy_id' => $resultpharma->id 
+                ]);
+                
                 $this->gardCount ++;
-            } elseif( $pharmacy->name == null ) {
+
+            } elseif( $pharmacy->qualifier === NULL ) {
                 Pharmacy::where('id', '=', $pharmacy->id)
                 ->update([
                     'name' => $datas[$i]['name'],
                     'address' => $datas[$i]['address'],
+                    'qualifier' => 1
                 ]);
+
                 $this->pharmacyUpdated ++;
+
                 Gard::create([
                     'startDate' =>  $datas[$i]['startDate'], 
                     'endDate' =>  $datas[$i]['endDate'], 
                     'guard_type' =>  $datas[$i]['guard-type'],
                     'pharmacy_id' => $pharmacy->id 
                 ]);
+                
                 $this->gardCount ++;
             } else { 
                 $gard = Gard::query()

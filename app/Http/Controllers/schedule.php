@@ -22,7 +22,7 @@ class schedule extends Controller
         $pharmaUpdate = session()->get('pharmacyUpdated');
         $pharmaFails = session()->get('pharmaFails');
 
-        last_scrape_info::where('executedBy', '=', 'App')
+        last_scrape_info::where('executedBy', '=', 'APP')
             ->update([
                 'guards_added' => $gardCount,
                 'pharmacies_added' => $pharmaCount,
@@ -42,7 +42,7 @@ class schedule extends Controller
         $pharmaUpdate = session()->get('pharmacyUpdated');
         $pharmaFails = session()->get('pharmaFails');
 
-        last_scrape_info::where('executedBy', 'Cron')
+        last_scrape_info::where('executedBy', 'CRON')
             ->update([
                 'guards_added' => $gardCount,
                 'pharmacies_added' => $pharmaCount,
