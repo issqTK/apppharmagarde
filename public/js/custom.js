@@ -202,7 +202,7 @@ $( function(){
 
     $('body').click(function(event){
       var target = $(event.target);
-      if(!target.parents().is("#admin-button") && !target.parents().is("#admin-popup") ){
+      if(!target.is("#admin-button") && !target.parents().is("#admin-popup") && !target.parents().is("#admin-button") ){
           $('#admin-popup').stop().fadeOut();
       }
     });

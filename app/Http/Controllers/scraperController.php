@@ -164,17 +164,12 @@ class scraperController extends Controller
           'updated_at' => Carbon::now()
       ]);
 
-      if(Session()->has('pharmacyCount') && Session()->has('gardCount')) {
-        Session()->pull('pharmacyCount'); Session()->pull('gardCount');
-      }
-      Session()->put(['pharmacyCount' => $pharmacyCount, 'gardCount' => $gardCount]);
-    
-      if(Session()->has('pharmacyUpdated')) {
-        Session()->pull('pharmacyUpdated');
-      }
-      Session()->put(['pharmacyUpdated' => $pharmacyUpdated]);
-      
-      return redirect()->route('scrapping');
+      $infos = array();
+      $infos['pharmacyCount'] = $pharmacyCount;
+      $infos['pharmacyUpdated'] = $pharmacyUpdated;
+      $infos['gardCount'] = $gardCount;
+
+      return $infos;
     }
 
     public function scrapeLEMATIN() {
@@ -297,6 +292,16 @@ class scraperController extends Controller
 
       }
       
+      $result = last_scrape_info::create([
+        'executedBy' =>  'App_single',
+        'city' =>  'Casablanca',
+        'guards_added' => $gardCount,
+        'pharmacies_added' => $pharmacyCount,
+        'pharmacies_Updated' => $pharmacyUpdated,
+        'pharmacies_fails_count' =>  0,
+        'updated_at' => Carbon::now()
+      ]);
+
       $infos = array();
       $infos['pharmacyCount'] = $pharmacyCount;
       $infos['pharmacyUpdated'] = $pharmacyUpdated;
@@ -306,21 +311,13 @@ class scraperController extends Controller
     }
 
     public function scrapeCasa() {
+      
       $infos = $this->scrapeLEMATIN(); 
+
       $pharmacyCount = $infos['pharmacyCount']; 
       $pharmacyUpdated = $infos['pharmacyUpdated'];
       $gardCount = $infos['gardCount'];
       
-      $result = last_scrape_info::create([
-          'executedBy' =>  'App_single',
-          'city' =>  'Casablanca',
-          'guards_added' => $gardCount,
-          'pharmacies_added' => $pharmacyCount,
-          'pharmacies_Updated' => $pharmacyUpdated,
-          'pharmacies_fails_count' =>  0,
-          'updated_at' => Carbon::now()
-      ]);
-
       if(Session()->has('pharmacyCount') && Session()->has('gardCount')) {
         Session()->pull('pharmacyCount');
         Session()->pull('gardCount');
@@ -335,8 +332,23 @@ class scraperController extends Controller
       return redirect()->route('scrapping');
     }
 
+    public function finally($pharmacyCount, $gardCount, $pharmacyUpdated) {
+        if(Session()->has('pharmacyCount') && Session()->has('gardCount')) {
+          Session()->pull('pharmacyCount'); Session()->pull('gardCount');
+        }
+        Session()->put(['pharmacyCount' => $pharmacyCount, 'gardCount' => $gardCount]);
+      
+        if(Session()->has('pharmacyUpdated')) {
+          Session()->pull('pharmacyUpdated');
+        }
+        Session()->put(['pharmacyUpdated' => $pharmacyUpdated]);
+        
+        return redirect()->route('scrapping');
+    }
     public function scrapeRabat() {
-      return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-rabat.html', 'Rabat', 2);
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-rabat.html', 'Rabat', 2);
+      
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeMarrakech() {

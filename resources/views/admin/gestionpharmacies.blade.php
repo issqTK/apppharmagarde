@@ -22,10 +22,12 @@
             </select>
         </div>
         
-        <div>
-            <label for="gmaps" class="label">Gmaps_URL NULL</label>
-            <input type="checkbox" name="gmaps" disabled id="gmaps">
-        </div>
+        <!-- <div>
+            <span>
+                <label for="gmaps" class="label">Gmaps_URL NULL</label>&nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="gmaps" disabled id="gmaps">
+            </span>
+        </div> -->
         
 
         <div>
@@ -41,7 +43,7 @@
     </form>
 </div>
 
-<div style="width:80%;" class="flex flex-col w-full mx-auto mt-4">
+<div class="flex flex-col w-full mx-auto mt-4">
         @if(Session::has('fail'))
         <span class="block w-full text-md font-semibold text-center text-red-400">{{ Session::get('fail') }}</span>
         @endif

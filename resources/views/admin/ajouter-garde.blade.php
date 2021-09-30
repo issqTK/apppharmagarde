@@ -76,12 +76,12 @@
                 </div>
             </div>
 
-            <a href="javascript:void(0)" id="show-listed">Afficher toutes les données Pharmacie</a>
+            <a href="javascript:void(0)" id="show-listed">Affiche Tout</a>
         </div>
 
 
         <div class="ajoutegarde">
-            <h3 class="h3" style="max-width:100%!important">Ajouter garde pour 'current pharmacy'</h3>
+            <h3 class="h3" style="max-width:100%!important">Ajouter une garde pour cette pharmacie</h3>
             
             @if(Session::has('error_date'))
             

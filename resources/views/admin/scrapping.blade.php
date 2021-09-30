@@ -2,14 +2,14 @@
 
 @section('content')
 
-<h3 class="h3">Scraper les Pharmacies de Garde</h3>
+<h3 class="h3">Scraper les Pharmacies en Garde</h3>
 
 @if(Session::has('pharmacyCount') && Session::has('gardCount'))
 
 <div class="affiche flex justify-around my-2 py-2  text-blue-900 font-semibold bg-blue-100">
   <span class="text-sm">{{ Session::get('pharmacyCount') }} Pharmacies Ajouter</span>
-  <span class="text-sm">{{ Session::get('pharmacyUpdated') }} Pharmacies Updated</span>
-  <span class="text-sm">{{ Session::get('gardCount') }} Gards Ajouter</span>
+  <span class="text-sm">{{ Session::get('pharmacyUpdated') }} Pharmacies Modifier</span>
+  <span class="text-sm">{{ Session::get('gardCount') }} Gardes Ajouter</span>
   <?php Session()->pull('pharmacyCount'); Session()->pull('gardCount'); ?>
 </div>
 

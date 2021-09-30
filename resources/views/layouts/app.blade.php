@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>{{ config('app.name', 'Laravel') }}</title>
+  <title>{{ config('app.name', 'app_pharma_garde') }}</title>
 
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -30,7 +30,7 @@
 
 <nav id="mainNav">
     <span id="hideNav">
-        <ion-icon name="close-circle-outline"></ion-icon>
+        <ion-icon name="close-outline"></ion-icon>
     </span>
     
     <!--Logo-->
@@ -41,18 +41,19 @@
 @if(!Session::has('loggedAdmin'))
     
     <a href="{{ route('login') }}" class="login">
-        <ion-icon name="log-in-outline" class="md:text-xl text-sm" style="vertical-align:bottom"></ion-icon>
+        <ion-icon name="log-in-outline" style="font-size:1.2em;vertical-align:middle;"></ion-icon>
         &nbsp;
-        Se Connecter
+        <span style="vertical-align:middle">Se Connecter</span>
     </a>
     
 @else    
     
-    <div class="user-nav" id="admin-button">
+    <div class="user-nav">
         <img src="{{url('/user.jpg')}}" alt="user_picture" />
         <span class="font-semibold" id="admin-button">
-            {{ Session::get('loggedAdmin')->username }}
             <ion-icon name="caret-down-outline" class="align-middle" id="fleshdown"></ion-icon>
+            <span>{{ Session::get('loggedAdmin')->username }}</span>
+           
         </span>
         <div class="logout">
             <a href="{{ route('logout') }}" id="admin-popup">Se déconnecter</a>
@@ -106,7 +107,7 @@
     
 <div  class="mainpage">
     <span id="showNav">
-        <ion-icon name="apps-outline"></ion-icon>
+        <ion-icon name="logo-tableau"></ion-icon>
     </span>
     
     <div class="hideMain"></div>

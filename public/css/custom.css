@@ -1,43 +1,35 @@
-/*NAV*/
+/*layouts App*/
 
-nav{
-    position: relative; 
-    width:25%; 
-    padding: 8px; 
-    position: fixed; 
-    top:0; 
-    left:0; 
-    bottom: 0; 
-    box-shadow: 1px 2px 5px darkgrey; 
-    z-index: 3; 
-    background: white;     
-    min-width: 280px }
-nav > span{
-    display: none;
-    position: absolute;
-    top: 0; right:0; 
-    width: 30px; height: 30px; }
+nav{ position: relative; width:25%; min-width: 280px; padding: 8px;
+    position: fixed; top:0; left:0; bottom: 0; 
+    box-shadow: 1px 2px 5px darkgrey; background: white;
+    z-index: 3; }
+/**/
+nav > span{ display: none; width: 30px; height: 30px;
+    position: absolute; top: 8px; right:8px; }
 nav > span > ion-icon{
     font-size: 1.5em;
-    display: table; margin: 1.5px auto;
-    cursor: pointer; }
-
+    display: table; 
+    margin: 1.5px auto;
+    cursor: pointer; 
+    color:gray; }
+/**/
 nav > .logo{ width:100%; }
-nav > .logo img{ display: block; max-width:150px; margin: auto;}
-
+nav > .logo img{ display: block; max-width:140px; margin: auto;}
+/**/
 nav > .login{
     display: table;
     margin: auto;
-    margin-top: 25px;
-    padding: 10px;
+    margin-top: 8px;
+    padding: 5px 8px;
     font-weight: bold;
     color: white;
     background-color: rgb(68, 216, 158);
     border-radius: 5px;
-    font-size: 0.95em;
+    font-size: 0.85em;
     text-transform: uppercase;
     border: 0; }
-
+/**/
 nav .user-nav{
     position: relative;
     display: table;
@@ -45,105 +37,95 @@ nav .user-nav{
     margin-top: 15px; }
 nav .user-nav > img{
     display: inline-block; 
-    width: 50px;
-    height: 45px;
+    width: 38px;
+    height: 32px;
     vertical-align: top;
     overflow: hidden; }
 nav .user-nav > span{
+    vertical-align: top;
     display: inline-block; width:auto; 
     margin-left: 10px;
-    padding: 0px 8px; 
-    line-height: 35px;
+    padding: 5px 8px; 
     letter-spacing: 0.5px;
-    font-size: 0.95em;
+    font-size: 0.85em;
     font-weight: bold;
     color: white;
     background-color: rgb(68, 216, 158);
     border-radius: 5px;
-    vertical-align: bottom;
     cursor: pointer; }
 nav .user-nav >div{
     display: table;
     position: absolute;
     right: 0;
-    padding: 8px 0; }
+    margin-top: 5px;
+    z-index: 3; }
 nav .user-nav > div > a{
     display: none;
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: bold;
     text-transform: uppercase;
-    z-index: 1;
+    z-index: 3;
     padding: 5px 8px;
     color: white;
     background-color:rgba(3, 180, 198, 0.8);
     border-radius: 3px; }
-
+/*NAV*/
 .nav{
     position: absolute; 
-    bottom: 8px; 
-    left:8px; 
-    right:8px; 
-    height: 75%;
+    bottom: 8px; left:8px; right:8px; 
+    height: 75%; max-height: 400px;
     background: url(../background-nav.jpg); 
     background-attachment: fixed; 
-    background-size: contain; 
-    background-origin: content-box; }
-.nav > li{ width: 100%; padding: 0;}
+    background-size:cover; 
+    background-origin: content-box;
+    border-radius: 5px; }
+/**/
+.nav > li{ width: 100%; padding: 0;} 
 .nav > li:last-child{ position: absolute; bottom: 0; border-top: 0.5px solid floralwhite }
-
 .nav > li > a{
     display: block;
-    padding: 10px 50px; 
-    font-size: 0.9em;
+    padding: 8px 40px; 
+    font-size: 0.85em;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.1px;
     color: floralwhite;
     border-bottom: 0.5px solid }
 .nav > li > a:hover{ background: #57CC99; }
-
-.nav .block{ display: none; background-color: whitesmoke; }
+/**/
+.nav .block{ display: none;   }
 .nav .block ul li a{
     display: block;
-    padding: 10px 50px;
-    font-size: 0.8em;
+    padding: 8px 40px;
+    font-size: 0.75em;
     font-weight: 500;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #22577A;
+    color: #2185c7;
+    opacity: 0.8;
+    background-color:white;
     border-bottom: 0.5px solid rgb(20 142 155 / 80%) }
-.nav .block ul li a:hover{ background:rgba(3, 180, 198, 0.8); color: white; }
+.nav .block ul li a:hover{ background:rgba(3, 180, 198, 0.8); color: white; opacity: 1!important; }
 
 .fake{ width: 30%; }
 
 /*MAIN*/
 
-.mainpage{ 
-    position: relative; 
-    display: block; 
-    width:70%; 
-    height:auto; 
-    margin: 25px 2% 0 2%; }
-
-#showNav{
-    display: none;
-    position: absolute;
-    top: -10px; left:0; 
-    width: 30px; height: 30px; }
-#showNav ion-icon{
-    font-size: 1.5em;
-    display: table; margin: 1.5px auto;
-    cursor: pointer; }
+.mainpage{ overflow: auto; position: relative;  display: block; 
+    width:70%;  min-height: 100vh; height:auto;  margin: 0 0 0 2%;  padding: 8px;}
+/**/
+#showNav{ display: none; position: absolute; top: 8px; left:0; width: 30px; height: 30px; }
+#showNav ion-icon{ font-size: 1.5em;  display: table; margin: 1.5px auto; cursor: pointer; }
 
 .mainpage .hideMain{
     display: none;
     position: absolute;
     top:0;
     bottom: 0;
-    right: 0;
+    right: -2%;
     left: 0;
-    background-color: grey;
-    opacity: 0.8;
+    background-color: black;
+    opacity: 0.4;
     z-index: 2; }
 
 /*INDEX*/
@@ -157,22 +139,34 @@ nav .user-nav > div > a{
     opacity: 0.9;
     border-radius: 2; }
 .bref > h4 {
-    padding: 0 35px;
+    padding: 0 0 0 11%;
     line-height: 35px;
     letter-spacing: 0.5px;
      word-spacing: 1px;
     color: black;
     text-shadow: 1px 2px 3px white;
-    background-color:white }
+    background-color:white ;
+    opacity: 0.9;
+    border-radius: 8%;
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
 .bref > p{
+    background: white;
     display: table;
-    margin: auto;
-    padding: 8px;
+    margin: 10px auto 0 auto;
+    opacity: 0.9;
+    border-radius: 5px;
+    padding: 0 11%;
     line-height: 35px;
     text-align: left;
     letter-spacing: 0.5px;
-    word-spacing: 1px;  
-    max-width: 80%; }
+    word-spacing: 1px;
+ }
+.bref > p > span{
+ display: block;
+ font-style: italic;
+} 
 .welcom > .secondP>strong{
     font-size: 0.9em; }
 .index-contains{
@@ -277,15 +271,23 @@ nav .user-nav > div > a{
     text-align: center; }
 .message .fails > p,  .submessage .fails > p{ color: rgba(243, 26, 26, 0.795); }
 .message .success > p{ color: rgb(68, 216, 158); }
-.addgarde, .deletePharma{ width:80%; margin:auto; }
+/***/
+.addgarde, .deletePharma{ 
+    width:80%; 
+    margin:auto; 
+}
 
-.addgarde label, .deletePharma label{ display: block; color:darkslategrey; }
+.addgarde label, .deletePharma label{ 
+    display: block; 
+    color:darkslategrey; 
+}
 .addgarde input[type="text"], .addgarde input[type="datetime-local"], .addgarde select, .deletePharma input[type="text"]{
     display: block;
     width: 100%;
     padding: 8px 10px;
     border-radius: 3px;
     border: 1px solid darkslategrey; }
+
 .addgarde input[type="submit"], .deletePharma input[type="submit"]{
     display: table;
     margin: 15px 0; }
@@ -294,10 +296,12 @@ nav .user-nav > div > a{
     padding: 8px 15px;
     margin-bottom: 25px;
     background:aliceblue;
-    border-radius: 2px; }
+    border-radius: 2px; 
+}
 .inside-listed{
     height: 150px;
-    overflow-y: hidden; }
+    overflow-y: hidden; 
+}
 .listed > a{
     display: block;
     padding: 8px 0;

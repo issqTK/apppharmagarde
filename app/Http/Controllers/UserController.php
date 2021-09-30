@@ -12,10 +12,20 @@ use App\Models\Gard;
 use App\Models\Admin;
 use App\Models\config;
 
+use Carbon\Carbon;
+
 use Illuminate\Http\Request;
+
+use App\Http\Controllers\scraperController;
+
+
 
 class UserController extends Controller
 {
+    public function __construct(scraperController $scraper){
+        $this->scraper = $scraper;
+    }
+
     public function index() {
         $cities = City::All();
         return view('index', ['cities' => $cities]);
@@ -28,14 +38,91 @@ class UserController extends Controller
 
         if(!$ct) { return redirect()->route('index'); }
 
-        $pharmacies = Pharmacy::join('gards', 'gards.pharmacy_id', '=', 'pharmacies.id')
-                        ->join('configs', 'configs.city_id', 'pharmacies.city_id')
+        $req = Pharmacy::join('gards', 'gards.pharmacy_id', '=', 'pharmacies.id')->join('configs', 'configs.city_id', 'pharmacies.city_id')
                         ->select('pharmacies.*', 'gards.*', 'configs.*')
                         ->where('pharmacies.city_id', $ct->id)
-                        ->whereRaw("gards.guard_type = configs.guard_type AND Now() BETWEEN gards.startDate AND gards.endDate AND NOW() BETWEEN configs.startHoure AND configs.endHoure AND gards.startDate IN (SELECT max(gards.startDate) FROM gards INNER JOIN pharmacies WHERE gards.pharmacy_id = pharmacies.id AND pharmacies.city_id = {$ct->id})")
-                        ->get();
+                        ->whereRaw("gards.guard_type = configs.guard_type AND NOW() BETWEEN gards.startDate AND gards.endDate AND gards.startDate IN (SELECT max(gards.startDate) FROM gards INNER JOIN pharmacies WHERE gards.pharmacy_id = pharmacies.id AND pharmacies.city_id = {$ct->id})");
+
+        if(!$req->exists()) {
+            switch ($ct->id) {
+                case 1:
+                    $this->scraper->scrapeLEMATIN();
+                    break;
+                case 2:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-rabat.html', 'Rabat', 2);
+                    break;
+                case 3:
+                    $this->scraper->scraper("https://www.annuaire-gratuit.ma/pharmacie-garde-marrakech.html", 'Marrakech', 3);
+                    break;
+                case 4:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-el-jadida.html', 'El Jadida', 4);
+                    break;
+                case 5:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-oujda.html', 'Oujda', 5);
+                    break;
+                case 6:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-meknes.html', 'Meknes', 6);
+                    break;
+                case 7:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-agadir.html', 'Agadir', 7);
+                    break;
+                case 8:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sale.html', 'Sale', 8);
+                    break;
+                case 9:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-safi.html', 'Safi', 9);
+                    break;
+                case 10:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-fes.html', 'Fès', 10);
+                    break;
+                case 11:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-kenitra.html', 'Kénitra', 11);
+                    break;
+                case 12:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-mohammedia.html', 'Mohammedia', 12);
+                    break;
+                case 13:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tanger.html', 'Tanger', 13);
+                    break;
+                case 14:
+                    $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-temara.html', 'Temara', 14);
+                    break;
+                default:
+                  return NULL;
+              }
+              return redirect('/pharmacie-de-garde-'. $ct->slug .'-frame"');
+
+        } else{
+            $datas = $req->get();
+
+            $now = Carbon::now()->toTimeString();
+            //$currentTime = Carbon::createFromFormat('H:i:s', $now);
+
+            $currentTime = strtotime($now);
+
+            $pharmacies = array();
+
+            for($i = 0; $i < count($datas); $i++) {
+                $startTime = strtotime($datas[$i]['startHoure']);
+                $endTime = strtotime($datas[$i]['endHoure']);
+
+                if( $currentTime >= $startTime && $currentTime <= $endTime ){
+                $pharmacies[$i]['name'] = $datas[$i]['name'];
+                $pharmacies[$i]['address'] = $datas[$i]['address'];
+                $pharmacies[$i]['phone'] = $datas[$i]['phone'];
+                $pharmacies[$i]['gmaps_url'] = $datas[$i]['gmaps_url'];
+                $pharmacies[$i]['startDate'] = $datas[$i]['startDate'];
+                $pharmacies[$i]['endDate'] = $datas[$i]['endDate'];
+                $pharmacies[$i]['guard_type'] = $datas[$i]['guard_type'];
+                $pharmacies[$i]['startHoure'] = $datas[$i]['startHoure'];
+                $pharmacies[$i]['endHoure'] = $datas[$i]['endHoure'];
+                }
+                
+            }
+                
+            session()->put('pharmacies', $pharmacies);
+        }
         
-        session()->put('pharmacies', $pharmacies);
     }
 
     public function display($city) {

@@ -3,23 +3,24 @@
 @section('content')
 
 @if(Session::has('loggedAdmin'))
-    <h3 class="h3">Welcome {{ Session::get('loggedAdmin')->username }}</h3>
+<h3 class="h3">Welcome {{ Session::get('loggedAdmin')->username }}</h3>
 @else
-    <h3 class="h3">Welcome</h3>
+<h3 class="h3">Welcome</h3>
 @endif
 
 @if(!Session::has('loggedAdmin'))
 
 <div class="bref">
    
-    <h4>Bref a Propos de L'application</h4>
+    <h4>A propos de l’application</h4>
     
-    <p>Cette Appli permet de scraper des données, et transfert ces dernier en mysql database,<br>
-    Après on affiche les pharmacies de garde de maroc baser sur les donner qu'on as scrapper.<br>
-    Notre équipe qui on l'accès a L'appli peuvent également explorer d'autres options comme : <br>
-        <strong>+ Ajouter une garde ou une pharmacie.</strong><br>
-        <strong>+ Filter, modifier et supprimer une pharmacie.</strong><br>
-        <strong>+ Scrapper une ou bien Tout les ville manuellement. </strong><br>
+    <p> Cette application permet de scraper des données, et de transférer ces dernières en mysql database;<br>
+        Après on affiche les pharmacies de garde du Maroc basées sur les données qu'on a scrappées.<br>
+        Notre équipe qui a l'accès à l'application peut également explorer d'autres options comme :<br>
+
+        <span><strong>+</strong> Ajouter une garde ou une pharmacie;</span>
+        <span><strong>+</strong> Filtrer, modifier et supprimer une pharmacie;</span>
+        <span><strong>+</strong> Scrapper une ou bien toutes les villes manuellement;</span>
     </p>
     
 </div>
@@ -28,10 +29,10 @@
 
 <div class="index-contains">
      
-    <h3>Gérer Gardes</h3>
+    <h3>Gestion des gardes</h3>
     <ul class="font-semibold">
-        <li><a href="{{ route('listergarde') }}">Lister Gardes par Ville</a></li>
-        <li><a href="{{ route('viewAddGarde') }}">Ajouter une Garde</a></li>
+        <li><a href="{{ route('listergarde') }}">Lister les gardes par ville</a></li>
+        <li><a href="{{ route('viewAddGarde') }}">Ajouter une garde</a></li>
 
     </ul>
 
@@ -39,11 +40,11 @@
 
 <div class="index-contains">
      
-   <h3>Gestion des Pharmacies</h3>
+   <h3>Gestion des pharmacies</h3>
     <ul class="font-semibold">
-        <li><a href="{{ route('getGesPharma') }}">Gérer Pharmacies</a></li>
-        <li><a href="{{ route('viewAddPharma') }}">Ajouter une Pharmacies</a></li>
-        <li><a href="{{ route('viewdeleteGarde') }}">Supprimer une Pharmacies</a></li>
+        <li><a href="{{ route('getGesPharma') }}">Gérer les pharmacies</a></li>
+        <li><a href="{{ route('viewAddPharma') }}">Ajouter une pharmacie</a></li>
+        <li><a href="{{ route('viewdeleteGarde') }}">Supprimer une pharmacie</a></li>
 
     </ul>
 
@@ -51,10 +52,10 @@
 
 <div class="index-contains">
      
-    <h3>Gestion de Scraping</h3>
+    <h3>Gestion de scraping</h3>
     <ul class="font-semibold">
         <li><a href="{{ route('updateInfos') }}">Activité</a></li>
-        <li><a href="{{ route('scrapping') }}">Administer Scraping</a></li>
+        <li><a href="{{ route('scrapping') }}">Administrer le scraping</a></li>
     </ul>
 
 </div>

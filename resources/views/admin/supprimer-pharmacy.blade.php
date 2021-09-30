@@ -2,26 +2,27 @@
 
 @section('content')
 
-<h3 class="h3">Supprimer Pharmacie </h3>
+<h3 class="h3">Supprimer une Pharmacie </h3>
 
 <div class="deletePharma">
     
+    <!--Echo MESSAGE-->
     <div class="message">
-    @if(Session::has('fails'))
+        @if(Session::has('fails'))
 
-    <div class="fails">
-        <h4>Message</h4>
-        <p>{{ Session::get('fails') }}</p>
-    </div>
+        <div class="fails">
+            <h4>Message</h4>
+            <p>{{ Session::get('fails') }}</p>
+        </div>
 
-    @elseif(Session::has('success'))
+        @elseif(Session::has('success'))
 
-    <div class="success">
-        <h4>Message</h4>
-        <p>{{ Session::get('success') }}</p>
-    </div>
+        <div class="success">
+            <h4>Message</h4>
+            <p>{{ Session::get('success') }}</p>
+        </div>
 
-    @endif
+        @endif
     </div>    
 
     <form action="{{ route('bringpharmacy2') }}" method="post">
@@ -38,59 +39,62 @@
     </form>
 
     @if(Session::has('exist'))
-        <div class="listed">
-            <div class="inside-listed">
-                <div>
-                    <span>Numéro de Téléphone</span>
-                    <p>{{ Session::get('exist')->phone }}</p>
-                </div>
-
-                <div>
-                    <span>Nom de Pharmacie</span>
-                    <p>{{ Session::get('exist')->name }}</p>
-                </div>
-
-                <div>
-                    <span>Adresse de Pharmacie</span>
-                    <p>{{ Session::get('exist')->address }}</p>
-                </div>
-
-                <div>
-                    <span>Ville ID</span>
-                    <p>{{ Session::get('exist')->city_id }}</p>
-                </div>
-
-                <div>
-                    <span>Gmaps Localisation</span>
-                    <p style="overflow-x: scroll;">{{ Session::get('exist')->gmaps_url }}</p>
-                </div>
-
-                <div>
-                    <span>Latitude</span>
-                    <p>{{ Session::get('exist')->lat }}</p>
-                </div>
-
-                <div>
-                    <span>Long</span>
-                    <p>{{ Session::get('exist')->long }}</p>
-                </div>
+    <div class="listed">
+        <div class="inside-listed">
+            <div>
+                <span>Numéro de Téléphone</span>
+                <p>{{ Session::get('exist')->phone }}</p>
             </div>
 
-            <a href="javascript:void(0)" id="show-listed">Afficher toutes les données Pharmacie</a>
+            <div>
+                <span>Nom de Pharmacie</span>
+                <p>{{ Session::get('exist')->name }}</p>
+            </div>
+
+            <div>
+                <span>Adresse de Pharmacie</span>
+                <p>{{ Session::get('exist')->address }}</p>
+            </div>
+
+            <div>
+                <span>Ville ID</span>
+                <p>{{ Session::get('exist')->city_id }}</p>
+            </div>
+
+            <div>
+                <span>Gmaps Localisation</span>
+                <p style="overflow-x: scroll;">{{ Session::get('exist')->gmaps_url }}</p>
+            </div>
+
+            <div>
+                <span>Latitude</span>
+                <p>{{ Session::get('exist')->lat }}</p>
+            </div>
+
+            <div>
+                <span>Long</span>
+                <p>{{ Session::get('exist')->long }}</p>
+            </div>
         </div>
 
+        <a href="javascript:void(0)" id="show-listed">Affiche Tout</a>
+    </div>
 
-        <div class="deleteNow">
-            <h3 class="h3" style="max-width:100%!important">Etes-vous sûr de vouloir supprimer 'Current Pharmacy' et ces gardes</h3>
-            
-            <form action="{{ route('deletenow') }}" method="post">
-                @csrf
 
-                <input type="hidden" name="pharmacyId" value="{{ Session::get('exist')->id }}">
+    <div class="deleteNow">
+        <h3 class="h3" style="max-width:100%!important">Etes-vous sûr de vouloir supprimer 'Current Pharmacy' et ces gardes</h3>
+        
+        <form action="{{ route('deletenow') }}" method="post">
+            @csrf
 
-                <input type="submit" value="Supprimer" class="submit">
-            </form>
-        </div>
+            <input type="hidden" name="pharmacyId" value="{{ Session::get('exist')->id }}">
+
+            <input type="submit" value="Supprimer" class="submit">
+        </form>
+    </div>
+
+    <?php session()->pull('exist'); ?>
+
     @endif
 </div>
 
