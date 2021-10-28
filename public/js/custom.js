@@ -78,9 +78,8 @@ $(function () {
     $( "#phone" ).keyup(function () {
         if($( this ).val().length > 0) {
             $('#city').prop('disabled', true);
-            $('#gmaps').prop('disabled', true);
-            $('#true').prop('disabled', true);
-            $('#false').prop('disabled', true);
+            $('#qualifier').prop('disabled', true);
+
   
             var regex = new RegExp('^[0-9]+$');
             var phone = $( this ).val();
@@ -93,9 +92,7 @@ $(function () {
             }
         } else {
             $('#city').prop('disabled', false);
-            $('#gmaps').prop('disabled', false);
-            $('#true').prop('disabled', false);
-            $('#false').prop('disabled', false);
+            $('#qualifier').prop('disabled', false);
         }
     });
   
@@ -103,48 +100,24 @@ $(function () {
         $('#city option:selected').each(function() {
             if( $(this).val() !== '') {
                 $('#phone').prop( "disabled", true );
-                $('#true').prop('disabled', true);
-                $('#false').prop('disabled', true);
-  
-                $( '#gmaps' ).prop('disabled', false);
                 $( '#submit' ).prop('disabled', false);
             } else{
                 $('#phone').prop( "disabled", false );
-                $('#true').prop('disabled', false);
-                $('#false').prop('disabled', false);
-  
-                $( '#gmaps' ).prop('disabled', true);
                 $( '#submit' ).prop('disabled', true);
             }
         });               
     })
   
-    $( "#true" ).change(function () {
-        if(this.checked) {
-            $('#city').prop('disabled', true);
-            $('#phone').prop('disabled', true);
-            $('#false').prop('disabled', true);
-            $( '#submit' ).prop('disabled', false);
-        } else {
-            $('#city').prop('disabled', false);
-            $('#phone').prop('disabled', false);
-            $('#false').prop('disabled', false);
-            $( '#submit' ).prop('disabled', true);
-        }
-    });
-  
-    $( "#false" ).change(function () {
-        if(this.checked) {
-            $('#city').prop('disabled', true);
-            $('#phone').prop('disabled', true);
-            $('#true').prop('disabled', true);
-            $( '#submit' ).prop('disabled', false);
-        } else {
-            $('#city').prop('disabled', false);
-            $('#phone').prop('disabled', false);
-            $('#true').prop('disabled', false);
-            $( '#submit' ).prop('disabled', true);
-        }
+    $( "#qualifier" ).change(function () {
+        $('#qualifier option:selected').each(function() {
+            if( $(this).val() !== '') {
+                $('#phone').prop( "disabled", true );
+                $( '#submit' ).prop('disabled', false);
+            } else{
+                $('#phone').prop( "disabled", false );
+                $( '#submit' ).prop('disabled', true);
+            }
+        });    
     });
   });
 

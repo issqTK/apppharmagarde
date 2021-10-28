@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\City;
-use App\Models\pharmacy;
+use App\Models\Pharmacy;
 use App\Models\Gard;
 
 use Carbon\Carbon;
@@ -20,16 +20,8 @@ class gespharmaController extends Controller
     public function filter(Request $request) {
         $phone = $request->phone;
         $city = $request->city;
-        $gmaps = $request->gmaps;
-        
-        if($request->true == 'on'){
-            $qualifier = 1;
-        } elseif($request->false == 'on') {
-            $qualifier = 0;
-        }
-        
-
-       if(!empty($phone)) {
+        $qualifier = $request->qualifier;
+       if(isset($phone)) {
             $datas = Pharmacy::select('*')->where('phone', '=', $phone)->get();
 
             if(count($datas) <= 0){
@@ -37,37 +29,30 @@ class gespharmaController extends Controller
             } else{
                     return back()->with(['datas' => $datas]);
             }
-       }
-       elseif(!empty($city)) {
-           if($gmaps == 'on') {
+       } elseif(isset($city)) {
+           if(isset($qualifier)) {
                 $datas = Pharmacy::select('*')
                 ->where('city_id', '=', $city)
-                ->whereRaw('gmaps_url IS NULL')
+                ->where('qualifier', '=', $qualifier)
                 ->get();
 
                 return back()->with(['datas' => $datas]);
            } else {
                 $datas = Pharmacy::select('*')
                 ->where('city_id', '=', $city)
+                ->whereRaw('name IS NOT NULL')
                 ->get();
 
                 return back()->with(['datas' => $datas]);
            }
 
-       } elseif($qualifier == 1){
+       } elseif(isset($qualifier)) {
             $datas = Pharmacy::select('*')
-            ->where('qualifier',  '=', 1)
+            ->where('qualifier',  '=', $qualifier)
             ->get();
 
             return back()->with(['datas' => $datas]);
-
-       } elseif($qualifier == 0){
-                $datas = Pharmacy::select('*')
-                ->where('qualifier',  '=', 0)
-                ->get();
-
-                return back()->with(['datas' => $datas]);
-        }
+       } 
     }
 
     public function getPharmacy($id){

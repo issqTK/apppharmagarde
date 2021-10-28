@@ -110,3 +110,46 @@ Route::get('/admin/scrapekenitra', [scraperController::class, 'scrapeKenitra'])-
 Route::get('/admin/scrapemohammedia', [scraperController::class, 'scrapeMohammedia'])->name('scrapemohammedia')->middleware('isLogged');
 Route::get('/admin/scrapetanger', [scraperController::class, 'scrapeTanger'])->name('scrapetanger')->middleware('isLogged');
 Route::get('/admin/scrapetemara', [scraperController::class, 'scrapeTemara'])->name('scrapetemara')->middleware('isLogged');
+
+Route::get('/admin/khouribga', [scraperController::class, 'scrapeKhribga'])->name('scrapekhouribga')->middleware('isLogged');
+Route::get('/admin/settat', [scraperController::class, 'scrapeSettat'])->name('scrapesettat')->middleware('isLogged');
+Route::get('/admin/tetouan', [scraperController::class, 'scrapeTetouan'])->name('scrapetetouan')->middleware('isLogged');
+
+Route::get('/admin/nador', [scraperController::class, 'scrapeNador'])->name('scrapenador')->middleware('isLogged');
+Route::get('/admin/berrchid', [scraperController::class, 'scrapeBerrechid'])->name('scrapeberrechid')->middleware('isLogged');
+Route::get('/admin/larache', [scraperController::class, 'scrapeLarache'])->name('scrapelarache')->middleware('isLogged');
+Route::get('/admin/ait-melloul', [scraperController::class, 'scrapeAitMelloul'])->name('scrapeaitmelloul')->middleware('isLogged');
+Route::get('/admin/berkane', [scraperController::class, 'scrapeBerkane'])->name('scrapeberkane')->middleware('isLogged');
+Route::get('/admin/essaouira', [scraperController::class, 'scrapeEssaouira'])->name('scrapeessaouira')->middleware('isLogged');
+Route::get('/admin/khemisset', [scraperController::class, 'scrapeKhemisset'])->name('scrapekhemisset')->middleware('isLogged');
+Route::get('/admin/taza', [scraperController::class, 'scrapeTaza'])->name('scrapetaza')->middleware('isLogged');
+Route::get('/admin/ouarzazate', [scraperController::class, 'scrapeOuarzazate'])->name('scrapeouarzazate')->middleware('isLogged');
+Route::get('/admin/inezgane', [scraperController::class, 'scrapeInezgane'])->name('scrapeinezgane')->middleware('isLogged');
+Route::get('/admin/bouznika', [scraperController::class, 'scrapeBouznika'])->name('scrapebouznika')->middleware('isLogged');
+Route::get('/admin/scrape-ben-guerir', [scraperController::class, 'scrapeBenGuerir'])->name('scrapebenguerir')->middleware('isLogged');
+Route::get('/admin/scrape-sidi-kacem', [scraperController::class, 'scrapeSidiKacem'])->name('scrapesidikacem')->middleware('isLogged');
+
+Route::get('/admin/scrape-guelmim', [scraperController::class, 'scrapeGuelmim'])->name('scrapeguelmim')->middleware('isLogged');
+Route::get('/admin/scrape-laayoune', [scraperController::class, 'scrapeLaayoune'])->name('scrapelaayoune')->middleware('isLogged');
+Route::get('/admin/scrape-chefchaouen', [scraperController::class, 'scrapeChefchaouen'])->name('scrapechefchaouen')->middleware('isLogged');
+
+Route::get('/admin/scrape-beni-mellal', [scraperController::class, 'scrapeBeniMellal'])->name('scrapebenimellal')->middleware('isLogged');
+Route::get('/admin/scrape-sefrou', [scraperController::class, 'scrapeSefrou'])->name('scrapesefrou')->middleware('isLogged');
+
+Route::get('/admin/scrape-tikiouine', [scraperController::class, 'scrapeTikiouine'])->name('scrapetikiouine')->middleware('isLogged');
+
+Route::get('/admin/scrape-tiflet', [scraperController::class, 'scrapeTiflet'])->name('scrapetiflet')->middleware('isLogged');
+
+Route::get('/admin/scrape-azrou', [scraperController::class, 'scrapeAzrou'])->name('scrapeazrou')->middleware('isLogged');
+
+Route::get('/admin/scrape-fkih-ben-salah', [scraperController::class, 'scrapeFkihBenSalah'])->name('scrapefkihbensalah')->middleware('isLogged');
+
+Route::get('/admin/scrape-al-hoceima', [scraperController::class, 'scrapeAlHoceima'])->name('scrapealhoceima')->middleware('isLogged');
+
+Route::get('/admin/scrape-ksar-el-kebir', [scraperController::class, 'scrapeKsarElKebir'])->name('scrapeksarelkebir')->middleware('isLogged');
+
+Route::get('/admin/scrape-sidi-slimane', [scraperController::class, 'scrapeSidiSlimane'])->name('scrapesidislimane')->middleware('isLogged');
+
+Route::get('/admin/scrape-dar-bouazza', [scraperController::class, 'scrapeDarBouazza'])->name('scrapedarbouazza')->middleware('isLogged');
+
+Route::get('/admin/scrape-taourirt', [scraperController::class, 'scrapeTaourirt'])->name('scrapetaourirt')->middleware('isLogged');

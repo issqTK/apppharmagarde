@@ -348,54 +348,216 @@ class scraperController extends Controller
     public function scrapeRabat() {
       $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-rabat.html', 'Rabat', 2);
       
-      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+      $infos = $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeMarrakech() {
-      return self::scraper("https://www.annuaire-gratuit.ma/pharmacie-garde-marrakech.html", 'Marrakech', 3);
+      $infos = self::scraper("https://www.annuaire-gratuit.ma/pharmacie-garde-marrakech.html", 'Marrakech', 3);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeEljadida() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-el-jadida.html', 'El Jadida', 4);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-el-jadida.html', 'El Jadida', 4);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeOujda() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-oujda.html', 'Oujda', 5);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-oujda.html', 'Oujda', 5);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeMeknes() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-meknes.html', 'Meknes', 6);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-meknes.html', 'Meknes', 6);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeAgadir() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-agadir.html', 'Agadir', 7);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-agadir.html', 'Agadir', 7);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeSale() {
-      return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sale.html', 'Sale', 8);
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sale.html', 'Sale', 8);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeSafi() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-safi.html', 'Safi', 9);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-safi.html', 'Safi', 9);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeFes() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-fes.html', 'Fès', 10);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-fes.html', 'Fès', 10);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeKenitra() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-kenitra.html', 'Kénitra', 11);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-kenitra.html', 'Kénitra', 11);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeMohammedia() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-mohammedia.html', 'Mohammedia', 12);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-mohammedia.html', 'Mohammedia', 12);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeTanger() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tanger.html', 'Tanger', 13);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tanger.html', 'Tanger', 13);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
 
     public function scrapeTemara() {
-        return self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-temara.html', 'Temara', 14);
+        $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-temara.html', 'Temara', 14);
+        return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
     }
+
+    public function scrapeKhouribga() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-khouribga.html', 'Khouribga', 15);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeSettat() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-settat.html', 'Settat', 16);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeTetouan() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tetouan.html', 'Tetouan', 17);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeNador() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-nador.html', 'Nador', 18);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeBerrechid() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-berrechid.html', 'Berrechid', 19);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeLarache() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-larache.html', 'Larache', 20);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeAitMelloul() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ait-melloul.html', 'Ait Melloul', 21);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeBerkane() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-berkane.html', 'Berkane', 22);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeEssaouira() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-essaouira.html', 'Essaouira', 23);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeKhemisset() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-khemisset.html', 'Khemisset', 24);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeTaza() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-taza.html', 'Taza', 25);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeOuarzazate() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ouarzazate.html', 'Ouarzazate', 26);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeInezgane() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-inezgane.html', 'Inezgane', 27);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeBouznika() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-bouznika.html', 'Bouznika', 28);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeBenGuerir() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ben-guerir.html', 'Ben Guerir', 29);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeSidiKacem() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sidi-kacem.html', 'Sidi Kacem', 30);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeGuelmim() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-guelmim.html', 'Guelmim', 31);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeLaayoune() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-laayoune.html', 'Laayoune', 32);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeChefchaouen() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-chefchaouen.html', 'Chefchaouen', 33);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeBeniMellal() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-beni-mellal.html', 'Beni Mellal', 34);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeSefrou() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sefrou.html', 'Sefrou', 35);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeTikiouine() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tikiouine.html', 'Tikiouine', 36);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeTiflet() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tiflet.html', 'Tiflet', 37);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeAzrou() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-azrou.html', 'Azrou', 38);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    }
+
+    public function scrapeFkihBenSalah() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-fkih-ben-salah.html', 'Fkih Ben Salah', 39);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeAlHoceima() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-al-hoceima.html', 'Al Hoceima', 40);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeKsarElKebir() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ksar-el-kebir.html', 'Ksar El Kebir', 41);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeSidiSlimane() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sidi-slimane.html', 'Sidi Slimane', 42);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeDarBouazza() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-dar-bouazza.html', 'Dar Bouazza', 43);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
+
+    public function scrapeTaourirt() {
+      $infos = self::scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-taourirt.html', 'Taourirt', 44);
+      return $this->finally($infos['pharmacyCount'], $infos['gardCount'], $infos['pharmacyUpdated']);
+    } 
 }

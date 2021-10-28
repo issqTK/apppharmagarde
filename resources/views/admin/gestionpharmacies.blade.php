@@ -9,7 +9,7 @@
     @csrf
         <div>
             <label for="phone" class="label">Filtré par Numéro de Téléphone</label>
-            <input type="text" name="phone" id="phone" placeholder="Ex:0555555555">
+            <input type="text" name="phone" id="phone" placeholder="Exemple 0555555555">
         </div>
                 
         <div>
@@ -21,20 +21,14 @@
                 @endforeach
             </select>
         </div>
-        
-        <!-- <div>
-            <span>
-                <label for="gmaps" class="label">Gmaps_URL NULL</label>&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" name="gmaps" disabled id="gmaps">
-            </span>
-        </div> -->
-        
 
         <div>
             <label class="label">Données Qualifiées</label>
-            <label for="true">True</label> <input type="checkbox" name="true" id="true">
-            &nbsp;&nbsp;&nbsp;
-            <label for="false">False</label> <input type="checkbox" name="false" id="false">
+            <select name="qualifier" id="qualifier" >
+                <option value="" selected disabled hidden>Choisir</option>
+                <option value="1" >Données Qualifiées</option>
+                <option value="0" >Données Non Qualifiées (à corriger)</option>
+            </select>
         </div>
 
         <div>

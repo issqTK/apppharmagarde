@@ -38,7 +38,8 @@ class UserController extends Controller
 
         if(!$ct) { return redirect()->route('index'); }
 
-        $req = Pharmacy::join('gards', 'gards.pharmacy_id', '=', 'pharmacies.id')->join('configs', 'configs.city_id', 'pharmacies.city_id')
+        $req = Pharmacy::join('gards', 'gards.pharmacy_id', '=', 'pharmacies.id')
+                        ->join('configs', 'configs.city_id', 'pharmacies.city_id')
                         ->select('pharmacies.*', 'gards.*', 'configs.*')
                         ->where('pharmacies.city_id', $ct->id)
                         ->whereRaw("gards.guard_type = configs.guard_type AND NOW() BETWEEN gards.startDate AND gards.endDate AND gards.startDate IN (SELECT max(gards.startDate) FROM gards INNER JOIN pharmacies WHERE gards.pharmacy_id = pharmacies.id AND pharmacies.city_id = {$ct->id})");
@@ -87,14 +88,103 @@ class UserController extends Controller
                 case 14:
                     $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-temara.html', 'Temara', 14);
                     break;
+                case 15:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-khouribga.html', 'Khouribga', 15);
+                    break;
+                case 16:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-settat.html', 'Settat', 16);
+                    break;
+                case 17:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tetouan.html', 'Tetouan', 17);
+                    break;
+                case 18:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-nador.html', 'Nador', 18);
+                    break;
+                case 19:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-berrechid.html', 'Berrechid', 19);
+                    break;
+                case 20:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-larache.html', 'Larache', 20);
+                    break;
+                case 21:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ait-melloul.html', 'Ait Melloul', 21);
+                    break;
+                case 22:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-berkane.html', 'Berkane', 22);
+                    break;
+                case 23:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-essaouira.html', 'Essaouira', 23);
+                    break;
+                case 24:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-khemisset.html', 'Khemisset', 24);
+                    break;
+                case 25:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-taza.html', 'Taza', 25);
+                    break;
+                case 26:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ouarzazate.html', 'Ouarzazate', 26);
+                    break;
+                case 27:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-inezgane.html', 'Inezgane', 27);
+                    break;
+                case 28:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-bouznika.html', 'Bouznika', 28);
+                    break;
+                case 29:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ben-guerir.html', 'Ben Guerir', 29);
+                    break;
+                case 30:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sidi-kacem.html', 'Sidi Kacem', 30);
+                    break;
+                case 31:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-guelmim.html', 'Guelmim', 31);
+                    break;
+                case 32:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-laayoune.html', 'Laayoune', 32);
+                    break;
+                case 33:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-chefchaouen.html', 'Chefchaouen', 33);
+                    break;
+                case 34:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-beni-mellal.html', 'Beni Mellal', 34);
+                    break;
+                case 35:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sefrou.html', 'Sefrou', 35);
+                    break;
+                case 36:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tikiouine.html', 'Tikiouine', 36);
+                    break;
+                case 37:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-tiflet.html', 'Tiflet', 37);
+                    break;
+                case 38:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-azrou.html', 'Azrou', 38);
+                    break;
+                case 39:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-fkih-ben-salah.html', 'Fkih Ben Salah', 39);
+                    break;
+                case 40:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-al-hoceima.html', 'Al Hoceima', 40);
+                    break;
+                case 41:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-ksar-el-kebir.html', 'Ksar El Kebir', 41);
+                    break;
+                case 42:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-sidi-slimane.html', 'Sidi Slimane', 42);
+                    break;
+                case 43:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-dar-bouazza.html', 'Dar Bouazza', 43);
+                    break;
+                case 44:
+                    return $this->scraper->scraper('https://www.annuaire-gratuit.ma/pharmacie-garde-taourirt.html', 'Taourirt', 44);
+                    break;
+
                 default:
                   return NULL;
               }
-              return redirect('/pharmacie-de-garde-'. $ct->slug .'-frame"');
 
         } else{
             $datas = $req->get();
-
             $now = Carbon::now()->toTimeString();
             //$currentTime = Carbon::createFromFormat('H:i:s', $now);
 
@@ -116,6 +206,7 @@ class UserController extends Controller
                 $pharmacies[$i]['guard_type'] = $datas[$i]['guard_type'];
                 $pharmacies[$i]['startHoure'] = $datas[$i]['startHoure'];
                 $pharmacies[$i]['endHoure'] = $datas[$i]['endHoure'];
+                
                 }
                 
             }
