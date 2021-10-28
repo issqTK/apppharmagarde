@@ -18,7 +18,6 @@ class CreateConfigsTable extends Migration
             $table->string('guard_type');
             $table->time('startHoure');
             $table->time('endHoure');
-            $table->bigInteger('rythm')->nullable();
             $table->unsignedInteger('city_id');
             $table->foreign('city_id')->references('id')->on('cities');
         });
